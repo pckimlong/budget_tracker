@@ -12,6 +12,11 @@ extension AmountX on double {
     return this - (this * 2);
   }
 
+  String moneyFormat() {
+    final formatter = NumberFormat.currency(symbol: "\$ ");
+    return formatter.format(this);
+  }
+
   double transform(CategoryType type) {
     double amount;
     switch (type) {
@@ -60,13 +65,15 @@ extension DateTimeX on DateTime {
   //   return tomorrow.day == day && tomorrow.month == month && tomorrow.year == year;
   // }
 
-  String formart() {
-    if (isToday) {
-      return "ថ្ងៃនេះ";
-    } else if (isYesterday) {
-      return "ម្សិលមិញ";
-    } else if (isTomorrow) {
-      return "ស្អែក";
+  String format([bool useYtdTodayTmr = true]) {
+    if (useYtdTodayTmr) {
+      if (isToday) {
+        return "ថ្ងៃនេះ";
+      } else if (isYesterday) {
+        return "ម្សិលមិញ";
+      } else if (isTomorrow) {
+        return "ស្អែក";
+      }
     }
     return DateFormat('dd-MM-yyyy').format(this);
   }

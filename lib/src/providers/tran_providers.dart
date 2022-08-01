@@ -15,6 +15,14 @@ class TranProviders {
       StateNotifierProvider.autoDispose<AddTranDataNotifier, Tran>((ref) {
     return AddTranDataNotifier();
   });
+
+  static final ofDate =
+      StreamProvider.autoDispose.family<IList<Tran>, DateTime>((ref, date) {
+    return ref
+        .watch(tranRepoProvider)
+        .watchAllByDate(date)
+        .map((event) => event.fold((l) => throw l, id));
+  });
 }
 
 class AddTranNotifier extends StateNotifier<AsyncValue<bool>> {

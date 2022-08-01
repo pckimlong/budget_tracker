@@ -5,15 +5,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 
-final _userDoc = kDebugMode
-    ? "debug-user-id"
-    : FirebaseAuth.instance.currentUser?.uid ?? "unauthorized";
-
 const String _userPath = "users-data";
 const String _categoryPath = "categories";
 const String _tranPath = "transactions";
 
 extension FireX on FirebaseFirestore {
+  String get _userDoc => kDebugMode
+      ? "debug-user-id"
+      : FirebaseAuth.instance.currentUser?.uid ?? "unauthorized";
+
   DocumentReference<Account?> get userDoc =>
       collection(_userPath).doc(_userDoc).withConverter(
             fromFirestore: (d, _) {

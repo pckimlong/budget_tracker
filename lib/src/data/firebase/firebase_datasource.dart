@@ -10,20 +10,33 @@ import '../../../exports.dart';
 import '../../core/app_failure.dart';
 
 class FirebaseDatasource {
-  final FirebaseFirestore firestore;
   FirebaseDatasource({
     required this.firestore,
   });
 
+  final FirebaseFirestore firestore;
+
+  Stream<Either<Failure, IList<Tran>>> streamAllTranByDate(DateTime date) {
+    return firestore.tranCollection
+        .where(Tran.dateKey, isEqualTo: date.dateOnly().millisecondsSinceEpoch)
+        .orderBy(Tran.createdAtKey)
+        .snapshots()
+        .map((event) => right(event.docs.map((e) => e.data()!).toIList()));
+  }
+
   Stream<Either<Failure, IList<Category>>> streamAllCategory() {
     return firestore.categoryCollection
+        .orderBy(Category.nameKey)
         .snapshots()
         .map((event) => right(event.docs.map((e) => e.data()!).toIList()));
   }
 
   Future<CategoryId?> createCategory(Category model) async {
     final ref = firestore.categoryCollection.doc();
-    await firestore.categoryCollection.add(model.copyWith(id: ref.id));
+    await ref.set(model.copyWith(
+      id: ref.id,
+      createdAt: DateTime.now(),
+    ));
     return ref.id;
   }
 
@@ -78,6 +91,7 @@ class FirebaseDatasource {
           docRef,
           data.copyWith(
             id: docRef.id,
+            date: data.date.dateOnly(),
             createdAt: DateTime.now(),
             modifiedAt: DateTime.now(),
           ),
@@ -85,14 +99,6 @@ class FirebaseDatasource {
 
         return docRef.id;
       },
-    );
-  }
-
-  void _incrementAccountBalance(Transaction txn, {required double increment}) {
-    final docRef = firestore.userDoc;
-    txn.update(
-      docRef,
-      {Account.totalBalanceKey: FieldValue.increment(increment)},
     );
   }
 
@@ -155,8 +161,22 @@ class FirebaseDatasource {
 
         final diffAmount = data.amount - oldData.data()!.amount;
         _incrementAccountBalance(txn, increment: diffAmount);
-        txn.set(docRef, data.copyWith(modifiedAt: DateTime.now()));
+        txn.set(
+          docRef,
+          data.copyWith(
+            date: data.date.dateOnly(),
+            modifiedAt: DateTime.now(),
+          ),
+        );
       },
+    );
+  }
+
+  void _incrementAccountBalance(Transaction txn, {required double increment}) {
+    final docRef = firestore.userDoc;
+    txn.update(
+      docRef,
+      {Account.totalBalanceKey: FieldValue.increment(increment)},
     );
   }
 }

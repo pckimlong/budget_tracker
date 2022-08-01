@@ -39,6 +39,7 @@ class AddCategoryDialog extends HookConsumerWidget {
               validator: FormBuilderValidators.required(errorText: 'សូមបំពេញ'),
             ),
           ),
+          const SizedBox(height: 20),
           if (saveState.hasError)
             InfoBar(
               title: Text(saveState.error.toString()),
@@ -49,7 +50,6 @@ class AddCategoryDialog extends HookConsumerWidget {
               title: Text("បង្កើតបានជោគជ័យ"),
               severity: InfoBarSeverity.success,
             ),
-          Text(saveState.toString())
         ],
       ),
       actions: [

@@ -22,10 +22,19 @@ Tran _$TranFromJson(Map<String, dynamic> json) {
 mixin _$Tran {
   String? get id => throw _privateConstructorUsedError;
   String get categoryId => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: Tran.dateKey,
+      fromJson: Tran._dateParserFromJsonNonNull,
+      toJson: Tran._dateParserToJsonNonNull)
   DateTime get date => throw _privateConstructorUsedError;
   String get note => throw _privateConstructorUsedError;
   double get amount => throw _privateConstructorUsedError;
+  @JsonKey(
+      name: Tran.createdAtKey,
+      fromJson: Tran._dateParserFromJson,
+      toJson: Tran._dateParserToJson)
   DateTime? get createdAt => throw _privateConstructorUsedError;
+  @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
   DateTime? get modifiedAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -40,11 +49,14 @@ abstract class $TranCopyWith<$Res> {
   $Res call(
       {String? id,
       String categoryId,
-      DateTime date,
+      @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
+          DateTime date,
       String note,
       double amount,
-      DateTime? createdAt,
-      DateTime? modifiedAt});
+      @JsonKey(name: Tran.createdAtKey, fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+          DateTime? createdAt,
+      @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+          DateTime? modifiedAt});
 }
 
 /// @nodoc
@@ -106,11 +118,14 @@ abstract class _$$_TranCopyWith<$Res> implements $TranCopyWith<$Res> {
   $Res call(
       {String? id,
       String categoryId,
-      DateTime date,
+      @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
+          DateTime date,
       String note,
       double amount,
-      DateTime? createdAt,
-      DateTime? modifiedAt});
+      @JsonKey(name: Tran.createdAtKey, fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+          DateTime? createdAt,
+      @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+          DateTime? modifiedAt});
 }
 
 /// @nodoc
@@ -171,11 +186,14 @@ class _$_Tran extends _Tran {
   _$_Tran(
       {this.id,
       required this.categoryId,
-      required this.date,
+      @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
+          required this.date,
       this.note = '',
       required this.amount,
-      this.createdAt,
-      this.modifiedAt})
+      @JsonKey(name: Tran.createdAtKey, fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+          this.createdAt,
+      @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+          this.modifiedAt})
       : super._();
 
   factory _$_Tran.fromJson(Map<String, dynamic> json) => _$$_TranFromJson(json);
@@ -185,6 +203,10 @@ class _$_Tran extends _Tran {
   @override
   final String categoryId;
   @override
+  @JsonKey(
+      name: Tran.dateKey,
+      fromJson: Tran._dateParserFromJsonNonNull,
+      toJson: Tran._dateParserToJsonNonNull)
   final DateTime date;
   @override
   @JsonKey()
@@ -192,8 +214,13 @@ class _$_Tran extends _Tran {
   @override
   final double amount;
   @override
+  @JsonKey(
+      name: Tran.createdAtKey,
+      fromJson: Tran._dateParserFromJson,
+      toJson: Tran._dateParserToJson)
   final DateTime? createdAt;
   @override
+  @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
   final DateTime? modifiedAt;
 
   @override
@@ -246,11 +273,14 @@ abstract class _Tran extends Tran {
   factory _Tran(
       {final String? id,
       required final String categoryId,
-      required final DateTime date,
+      @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
+          required final DateTime date,
       final String note,
       required final double amount,
-      final DateTime? createdAt,
-      final DateTime? modifiedAt}) = _$_Tran;
+      @JsonKey(name: Tran.createdAtKey, fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+          final DateTime? createdAt,
+      @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+          final DateTime? modifiedAt}) = _$_Tran;
   _Tran._() : super._();
 
   factory _Tran.fromJson(Map<String, dynamic> json) = _$_Tran.fromJson;
@@ -260,14 +290,23 @@ abstract class _Tran extends Tran {
   @override
   String get categoryId;
   @override
+  @JsonKey(
+      name: Tran.dateKey,
+      fromJson: Tran._dateParserFromJsonNonNull,
+      toJson: Tran._dateParserToJsonNonNull)
   DateTime get date;
   @override
   String get note;
   @override
   double get amount;
   @override
+  @JsonKey(
+      name: Tran.createdAtKey,
+      fromJson: Tran._dateParserFromJson,
+      toJson: Tran._dateParserToJson)
   DateTime? get createdAt;
   @override
+  @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
   DateTime? get modifiedAt;
   @override
   @JsonKey(ignore: true)

@@ -1,6 +1,7 @@
 import 'package:budget_tracker/exports.dart';
 import 'package:budget_tracker/src/common_providers.dart';
 import 'package:budget_tracker/src/core/app_failure.dart';
+import 'package:budget_tracker/src/data/firebase/error_handling.dart';
 import 'package:budget_tracker/src/data/firebase/firebase_datasource.dart';
 import 'package:budget_tracker/src/data/model/tran.dart';
 
@@ -11,7 +12,7 @@ final tranRepoProvider = Provider<ITranRepo>((ref) {
 abstract class ITranRepo {
   Future<Either<Failure, Tran>> create(Tran data);
   Future<Either<Failure, Tran>> update(Tran data);
-  Future<Either<Failure, Tran>> delete(TranId id);
+  Future<Either<Failure, Unit>> delete(TranId id);
   Future<Either<Failure, double>> getOpeningBalanceOfDate(DateTime date);
   Stream<Either<Failure, IList<Tran>>> watchAllByDate(DateTime date);
   Future<Either<Failure, IList<Tran>>> findAllByDateRange({
@@ -30,15 +31,19 @@ class _Impl implements ITranRepo {
   _Impl(this._datasource);
 
   @override
-  Future<Either<Failure, Tran>> create(Tran data) {
-    // TODO: implement create
-    throw UnimplementedError();
+  Future<Either<Failure, Tran>> create(Tran data) async {
+    return await errorHandler(() async {
+      final id = await _datasource.createTran(data);
+      return right(data.copyWith(id: id));
+    });
   }
 
   @override
-  Future<Either<Failure, Tran>> delete(TranId id) {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<Either<Failure, Unit>> delete(TranId id) async {
+    return await errorHandler(() async {
+      await _datasource.deleteTran(id);
+      return right(unit);
+    });
   }
 
   @override
@@ -56,15 +61,16 @@ class _Impl implements ITranRepo {
   }
 
   @override
-  Future<Either<Failure, Tran>> update(Tran data) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<Either<Failure, Tran>> update(Tran data) async {
+    return await errorHandler(() async {
+      await _datasource.updateTran(data);
+      return right(data);
+    });
   }
 
   @override
   Stream<Either<Failure, IList<Tran>>> watchAllByDate(DateTime date) {
-    // TODO: implement watchAllByDate
-    throw UnimplementedError();
+    return _datasource.streamAllTranByDate(date).onErrorReturnFailure();
   }
 
   @override

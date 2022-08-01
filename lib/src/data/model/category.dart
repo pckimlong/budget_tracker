@@ -12,11 +12,12 @@ typedef CategoryId = String;
 @freezed
 class Category with _$Category {
   static const createdAtKey = "createdAt";
+  static const nameKey = "name";
 
   factory Category({
     CategoryId? id,
     required CategoryType type,
-    required String name,
+    @JsonKey(name: Category.nameKey) required String name,
     @JsonKey(name: Category.createdAtKey) DateTime? createdAt,
   }) = _Category;
 

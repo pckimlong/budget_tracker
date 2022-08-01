@@ -42,18 +42,27 @@ class AddTransactionDialog extends HookConsumerWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final savingState = ref.watch(TranProviders.add);
 
-    String title;
+    String headline6;
     switch (type) {
       case CategoryType.income:
-        title = 'កត់ត្រាចំណូល';
+        headline6 = 'កត់ត្រាចំណូល';
         break;
       case CategoryType.expense:
-        title = "កត់ត្រាចំណាយ";
+        headline6 = "កត់ត្រាចំណាយ";
         break;
     }
 
+    ref.listen<AsyncValue<bool>>(
+      TranProviders.add,
+      (previous, next) {
+        if (previous?.isLoading == true && next == const AsyncValue.data(true)) {
+          Navigator.pop(context);
+        }
+      },
+    );
+
     return ContentDialog(
-      title: Text(title),
+      title: Text(headline6),
       content: Form(
         key: formKey,
         child: Column(
@@ -79,7 +88,13 @@ class AddTransactionDialog extends HookConsumerWidget {
       ),
       actions: [
         MyFilledButton(
-          child: const Text('រក្សាទុក'),
+          child: savingState.isLoading
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: ProgressRing(),
+                )
+              : const Text('រក្សាទុក'),
           onPressed: () async {
             formKey.currentState!.save();
             if (formKey.currentState!.validate()) {
@@ -179,6 +194,7 @@ class _Amount extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = useTextEditingController();
+    final focus = useFocusNode();
     final color = type == CategoryType.expense ? Colors.red : Colors.green;
     final sign = type == CategoryType.expense ? "-" : "+";
     final textStyle = TextStyle(
@@ -188,10 +204,32 @@ class _Amount extends HookConsumerWidget {
       color: color,
     );
 
+    ref.listen<String>(
+      TranProviders.addData.select((value) => value.categoryId),
+      (previous, next) {
+        if (previous.isNullOrBlank && next.isNotNullOrBlank) {
+          focus.requestFocus();
+        }
+      },
+    );
+
     return SizedBox(
       width: 250,
       child: TextFormBox(
         controller: controller,
+        focusNode: focus,
+        onChanged: (value) {
+          EasyDebounce.debounce(
+            'amount',
+            const Duration(milliseconds: 200),
+            () {
+              if (value.toDoubleOrNull() == null) return;
+              ref
+                  .read(TranProviders.addData.notifier)
+                  .onAmountChanged(value.toDouble());
+            },
+          );
+        },
         placeholder: '0.00',
         placeholderStyle: textStyle,
         inputFormatters: inputFormatterNumeric,

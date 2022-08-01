@@ -27,7 +27,7 @@ Future<Either<Failure, T>> errorHandler<T>(
     log(e.message ?? "FirebaseException", error: e);
     return left(Failure.exception(e.message));
   } on Exception catch (e) {
-    log("Exception", error: e);
+    log("Exception", error: e.toString());
     if (e is Failure) return left(e);
     return left(Failure.exception(e.toString()));
   }
@@ -37,6 +37,7 @@ extension StreamEitherFailure<T> on Stream<Either<Failure, T>> {
   Stream<Either<Failure, T>> onErrorReturnFailure() {
     return onErrorReturnWith(
       ((error, stackTrace) {
+        log("Stream error:", error: error);
         return left(Failure.exception(error.toString()));
       }),
     );

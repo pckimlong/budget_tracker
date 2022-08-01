@@ -32,3 +32,14 @@ List<TextInputFormatter> get inputFormatterNumeric => [
         return newValue;
       }),
     ];
+
+class ModelParser {
+  static int? dateParserToJson(DateTime? dateTime) {
+    return dateTime?.millisecondsSinceEpoch;
+  }
+
+  static DateTime? dateParserFromJson(int? millisecondsSinceEpoch) {
+    if (millisecondsSinceEpoch == null) return null;
+    return DateTime.fromMillisecondsSinceEpoch(millisecondsSinceEpoch);
+  }
+}

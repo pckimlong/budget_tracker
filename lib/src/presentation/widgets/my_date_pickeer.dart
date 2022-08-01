@@ -100,7 +100,7 @@ class MyDatePicker extends HookConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        selected.formart(),
+                        selected.format(),
                         style: FluentTheme.of(context).typography.body,
                       ),
                       const SizedBox(width: 12),
