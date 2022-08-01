@@ -1,13 +1,11 @@
 import 'package:budget_tracker/src/common_providers.dart';
 import 'package:budget_tracker/src/core/app_failure.dart';
-import 'package:budget_tracker/src/data/firebase/error_handling.dart';
-import 'package:budget_tracker/src/data/firebase/firebase_datasource.dart';
 import 'package:budget_tracker/src/data/model/category.dart';
 
 import '../../../exports.dart';
 
 final categoryRepoProvider = Provider<ICategoryRepo>((ref) {
-  return _Impl(ref.watch(datasourceProvider));
+  return _Impl(ref.watch(supabaseClientProvider));
 });
 
 abstract class ICategoryRepo {
@@ -18,36 +16,31 @@ abstract class ICategoryRepo {
 }
 
 class _Impl implements ICategoryRepo {
-  final FirebaseDatasource _datasource;
+  final SupabaseClient _client;
 
-  _Impl(this._datasource);
+  _Impl(this._client);
 
   @override
-  Future<Either<Failure, Unit>> create(Category model) async {
-    return await errorHandler(() async {
-      await _datasource.createCategory(model);
-      return right(unit);
-    });
+  Future<Either<Failure, Unit>> create(Category model) {
+    // TODO: implement create
+    throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, Unit>> delete(CategoryId id) async {
-    return await errorHandler(() async {
-      await _datasource.deleteCategory(id);
-      return right(unit);
-    });
+  Future<Either<Failure, Unit>> delete(CategoryId id) {
+    // TODO: implement delete
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, Unit>> update(Category model) {
+    // TODO: implement update
+    throw UnimplementedError();
   }
 
   @override
   Stream<Either<Failure, IList<Category>>> watchAll() {
-    return _datasource.streamAllCategory().onErrorReturnFailure();
-  }
-
-  @override
-  Future<Either<Failure, Unit>> update(Category model) async {
-    return await errorHandler(() async {
-      await _datasource.updateCategory(model);
-      return right(unit);
-    });
+    // TODO: implement watchAll
+    throw UnimplementedError();
   }
 }

@@ -22,6 +22,7 @@ Category _$CategoryFromJson(Map<String, dynamic> json) {
 mixin _$Category {
   String? get id => throw _privateConstructorUsedError;
   CategoryType get type => throw _privateConstructorUsedError;
+  @JsonKey(name: Category.nameKey)
   String get name => throw _privateConstructorUsedError;
   @JsonKey(name: Category.createdAtKey)
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -39,7 +40,7 @@ abstract class $CategoryCopyWith<$Res> {
   $Res call(
       {String? id,
       CategoryType type,
-      String name,
+      @JsonKey(name: Category.nameKey) String name,
       @JsonKey(name: Category.createdAtKey) DateTime? createdAt});
 }
 
@@ -88,7 +89,7 @@ abstract class _$$_CategoryCopyWith<$Res> implements $CategoryCopyWith<$Res> {
   $Res call(
       {String? id,
       CategoryType type,
-      String name,
+      @JsonKey(name: Category.nameKey) String name,
       @JsonKey(name: Category.createdAtKey) DateTime? createdAt});
 }
 
@@ -136,7 +137,7 @@ class _$_Category implements _Category {
   _$_Category(
       {this.id,
       required this.type,
-      required this.name,
+      @JsonKey(name: Category.nameKey) required this.name,
       @JsonKey(name: Category.createdAtKey) this.createdAt});
 
   factory _$_Category.fromJson(Map<String, dynamic> json) =>
@@ -147,6 +148,7 @@ class _$_Category implements _Category {
   @override
   final CategoryType type;
   @override
+  @JsonKey(name: Category.nameKey)
   final String name;
   @override
   @JsonKey(name: Category.createdAtKey)
@@ -194,7 +196,7 @@ abstract class _Category implements Category {
   factory _Category(
           {final String? id,
           required final CategoryType type,
-          required final String name,
+          @JsonKey(name: Category.nameKey) required final String name,
           @JsonKey(name: Category.createdAtKey) final DateTime? createdAt}) =
       _$_Category;
 
@@ -205,6 +207,7 @@ abstract class _Category implements Category {
   @override
   CategoryType get type;
   @override
+  @JsonKey(name: Category.nameKey)
   String get name;
   @override
   @JsonKey(name: Category.createdAtKey)

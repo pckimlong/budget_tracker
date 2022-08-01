@@ -1,12 +1,10 @@
 import 'package:budget_tracker/exports.dart';
 import 'package:budget_tracker/src/common_providers.dart';
 import 'package:budget_tracker/src/core/app_failure.dart';
-import 'package:budget_tracker/src/data/firebase/error_handling.dart';
-import 'package:budget_tracker/src/data/firebase/firebase_datasource.dart';
 import 'package:budget_tracker/src/data/model/tran.dart';
 
 final tranRepoProvider = Provider<ITranRepo>((ref) {
-  return _Impl(ref.watch(datasourceProvider));
+  return _Impl(ref.watch(supabaseClientProvider));
 });
 
 abstract class ITranRepo {
@@ -26,24 +24,20 @@ abstract class ITranRepo {
 }
 
 class _Impl implements ITranRepo {
-  final FirebaseDatasource _datasource;
+  final SupabaseClient _client;
 
-  _Impl(this._datasource);
+  _Impl(this._client);
 
   @override
-  Future<Either<Failure, Tran>> create(Tran data) async {
-    return await errorHandler(() async {
-      final id = await _datasource.createTran(data);
-      return right(data.copyWith(id: id));
-    });
+  Future<Either<Failure, Tran>> create(Tran data) {
+    // TODO: implement create
+    throw UnimplementedError();
   }
 
   @override
-  Future<Either<Failure, Unit>> delete(TranId id) async {
-    return await errorHandler(() async {
-      await _datasource.deleteTran(id);
-      return right(unit);
-    });
+  Future<Either<Failure, Unit>> delete(TranId id) {
+    // TODO: implement delete
+    throw UnimplementedError();
   }
 
   @override
@@ -61,21 +55,20 @@ class _Impl implements ITranRepo {
   }
 
   @override
-  Future<Either<Failure, Tran>> update(Tran data) async {
-    return await errorHandler(() async {
-      await _datasource.updateTran(data);
-      return right(data);
-    });
+  Future<Either<Failure, double>> getOpeningBalanceOfDate(DateTime date) {
+    // TODO: implement getOpeningBalanceOfDate
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, Tran>> update(Tran data) {
+    // TODO: implement update
+    throw UnimplementedError();
   }
 
   @override
   Stream<Either<Failure, IList<Tran>>> watchAllByDate(DateTime date) {
-    return _datasource.streamAllTranByDate(date).onErrorReturnFailure();
-  }
-
-  @override
-  Future<Either<Failure, double>> getOpeningBalanceOfDate(DateTime date) {
-    // TODO: implement getOpeningBalanceOfDate
+    // TODO: implement watchAllByDate
     throw UnimplementedError();
   }
 }
