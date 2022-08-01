@@ -91,8 +91,8 @@ flutter:
         - asset: assets/kantumruy/Kantumruy-Light.ttf
     - family: Battambang
       fonts:
-        - asset: assets/fonts/battambang/Battambang-Regular.ttf
-        - asset: assets/fonts/battambang/Battambang-Bold.ttf
+        - asset: assets/battambang/Battambang-Regular.ttf
+        - asset: assets/battambang/Battambang-Bold.ttf
           weight: 600
   # fonts:
   #   - family: Schyler

@@ -12,6 +12,7 @@ abstract class ITranRepo {
   Future<Either<Failure, Tran>> create(Tran data);
   Future<Either<Failure, Tran>> update(Tran data);
   Future<Either<Failure, Tran>> delete(TranId id);
+  Future<Either<Failure, double>> getOpeningBalanceOfDate(DateTime date);
   Stream<Either<Failure, IList<Tran>>> watchAllByDate(DateTime date);
   Future<Either<Failure, IList<Tran>>> findAllByDateRange({
     required DateTime startDate,
@@ -63,6 +64,12 @@ class _Impl implements ITranRepo {
   @override
   Stream<Either<Failure, IList<Tran>>> watchAllByDate(DateTime date) {
     // TODO: implement watchAllByDate
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, double>> getOpeningBalanceOfDate(DateTime date) {
+    // TODO: implement getOpeningBalanceOfDate
     throw UnimplementedError();
   }
 }

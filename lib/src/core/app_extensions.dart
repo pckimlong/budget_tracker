@@ -6,6 +6,35 @@ extension BuidContextX on BuildContext {
   ThemeData get theme => FluentTheme.of(this);
 }
 
+extension AmountX on double {
+  double toNegative() {
+    if (this < 0) return this;
+    return this - (this * 2);
+  }
+
+  double transform(CategoryType type) {
+    double amount;
+    switch (type) {
+      case CategoryType.income:
+        amount = abs();
+        break;
+      case CategoryType.expense:
+        amount = toNegative();
+        break;
+    }
+    return amount;
+  }
+
+  double opposite() {
+    if (this == 0) return this;
+    if (this < 0) {
+      return abs();
+    } else {
+      return toNegative();
+    }
+  }
+}
+
 extension CategoryTypeX on CategoryType {
   String khmer() {
     switch (this) {

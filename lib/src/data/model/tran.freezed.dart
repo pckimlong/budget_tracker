@@ -25,7 +25,6 @@ mixin _$Tran {
   DateTime get date => throw _privateConstructorUsedError;
   String get note => throw _privateConstructorUsedError;
   double get amount => throw _privateConstructorUsedError;
-  double? get balance => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get modifiedAt => throw _privateConstructorUsedError;
 
@@ -44,7 +43,6 @@ abstract class $TranCopyWith<$Res> {
       DateTime date,
       String note,
       double amount,
-      double? balance,
       DateTime? createdAt,
       DateTime? modifiedAt});
 }
@@ -64,7 +62,6 @@ class _$TranCopyWithImpl<$Res> implements $TranCopyWith<$Res> {
     Object? date = freezed,
     Object? note = freezed,
     Object? amount = freezed,
-    Object? balance = freezed,
     Object? createdAt = freezed,
     Object? modifiedAt = freezed,
   }) {
@@ -89,10 +86,6 @@ class _$TranCopyWithImpl<$Res> implements $TranCopyWith<$Res> {
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as double,
-      balance: balance == freezed
-          ? _value.balance
-          : balance // ignore: cast_nullable_to_non_nullable
-              as double?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -116,7 +109,6 @@ abstract class _$$_TranCopyWith<$Res> implements $TranCopyWith<$Res> {
       DateTime date,
       String note,
       double amount,
-      double? balance,
       DateTime? createdAt,
       DateTime? modifiedAt});
 }
@@ -137,7 +129,6 @@ class __$$_TranCopyWithImpl<$Res> extends _$TranCopyWithImpl<$Res>
     Object? date = freezed,
     Object? note = freezed,
     Object? amount = freezed,
-    Object? balance = freezed,
     Object? createdAt = freezed,
     Object? modifiedAt = freezed,
   }) {
@@ -162,10 +153,6 @@ class __$$_TranCopyWithImpl<$Res> extends _$TranCopyWithImpl<$Res>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as double,
-      balance: balance == freezed
-          ? _value.balance
-          : balance // ignore: cast_nullable_to_non_nullable
-              as double?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -187,7 +174,6 @@ class _$_Tran extends _Tran {
       required this.date,
       this.note = '',
       required this.amount,
-      this.balance,
       this.createdAt,
       this.modifiedAt})
       : super._();
@@ -206,15 +192,13 @@ class _$_Tran extends _Tran {
   @override
   final double amount;
   @override
-  final double? balance;
-  @override
   final DateTime? createdAt;
   @override
   final DateTime? modifiedAt;
 
   @override
   String toString() {
-    return 'Tran(id: $id, categoryId: $categoryId, date: $date, note: $note, amount: $amount, balance: $balance, createdAt: $createdAt, modifiedAt: $modifiedAt)';
+    return 'Tran(id: $id, categoryId: $categoryId, date: $date, note: $note, amount: $amount, createdAt: $createdAt, modifiedAt: $modifiedAt)';
   }
 
   @override
@@ -228,7 +212,6 @@ class _$_Tran extends _Tran {
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.note, note) &&
             const DeepCollectionEquality().equals(other.amount, amount) &&
-            const DeepCollectionEquality().equals(other.balance, balance) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality()
                 .equals(other.modifiedAt, modifiedAt));
@@ -243,7 +226,6 @@ class _$_Tran extends _Tran {
       const DeepCollectionEquality().hash(date),
       const DeepCollectionEquality().hash(note),
       const DeepCollectionEquality().hash(amount),
-      const DeepCollectionEquality().hash(balance),
       const DeepCollectionEquality().hash(createdAt),
       const DeepCollectionEquality().hash(modifiedAt));
 
@@ -267,7 +249,6 @@ abstract class _Tran extends Tran {
       required final DateTime date,
       final String note,
       required final double amount,
-      final double? balance,
       final DateTime? createdAt,
       final DateTime? modifiedAt}) = _$_Tran;
   _Tran._() : super._();
@@ -284,8 +265,6 @@ abstract class _Tran extends Tran {
   String get note;
   @override
   double get amount;
-  @override
-  double? get balance;
   @override
   DateTime? get createdAt;
   @override

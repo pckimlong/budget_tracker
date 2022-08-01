@@ -20,6 +20,7 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Account {
+  @JsonKey(name: Account.totalBalanceKey)
   double get totalBalance => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -31,7 +32,7 @@ mixin _$Account {
 abstract class $AccountCopyWith<$Res> {
   factory $AccountCopyWith(Account value, $Res Function(Account) then) =
       _$AccountCopyWithImpl<$Res>;
-  $Res call({double totalBalance});
+  $Res call({@JsonKey(name: Account.totalBalanceKey) double totalBalance});
 }
 
 /// @nodoc
@@ -61,7 +62,7 @@ abstract class _$$_AccountCopyWith<$Res> implements $AccountCopyWith<$Res> {
           _$_Account value, $Res Function(_$_Account) then) =
       __$$_AccountCopyWithImpl<$Res>;
   @override
-  $Res call({double totalBalance});
+  $Res call({@JsonKey(name: Account.totalBalanceKey) double totalBalance});
 }
 
 /// @nodoc
@@ -89,13 +90,13 @@ class __$$_AccountCopyWithImpl<$Res> extends _$AccountCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Account implements _Account {
-  _$_Account({this.totalBalance = 0});
+  _$_Account({@JsonKey(name: Account.totalBalanceKey) this.totalBalance = 0});
 
   factory _$_Account.fromJson(Map<String, dynamic> json) =>
       _$$_AccountFromJson(json);
 
   @override
-  @JsonKey()
+  @JsonKey(name: Account.totalBalanceKey)
   final double totalBalance;
 
   @override
@@ -131,178 +132,17 @@ class _$_Account implements _Account {
 }
 
 abstract class _Account implements Account {
-  factory _Account({final double totalBalance}) = _$_Account;
+  factory _Account(
+          {@JsonKey(name: Account.totalBalanceKey) final double totalBalance}) =
+      _$_Account;
 
   factory _Account.fromJson(Map<String, dynamic> json) = _$_Account.fromJson;
 
   @override
+  @JsonKey(name: Account.totalBalanceKey)
   double get totalBalance;
   @override
   @JsonKey(ignore: true)
   _$$_AccountCopyWith<_$_Account> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-BalanceResolver _$BalanceResolverFromJson(Map<String, dynamic> json) {
-  return _BalanceResolver.fromJson(json);
-}
-
-/// @nodoc
-mixin _$BalanceResolver {
-  double get amount => throw _privateConstructorUsedError;
-
-  /// balance resolver should being applied only if the transaction date is below
-  /// [effectingDate]
-  DateTime get effectingDate => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $BalanceResolverCopyWith<BalanceResolver> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $BalanceResolverCopyWith<$Res> {
-  factory $BalanceResolverCopyWith(
-          BalanceResolver value, $Res Function(BalanceResolver) then) =
-      _$BalanceResolverCopyWithImpl<$Res>;
-  $Res call({double amount, DateTime effectingDate});
-}
-
-/// @nodoc
-class _$BalanceResolverCopyWithImpl<$Res>
-    implements $BalanceResolverCopyWith<$Res> {
-  _$BalanceResolverCopyWithImpl(this._value, this._then);
-
-  final BalanceResolver _value;
-  // ignore: unused_field
-  final $Res Function(BalanceResolver) _then;
-
-  @override
-  $Res call({
-    Object? amount = freezed,
-    Object? effectingDate = freezed,
-  }) {
-    return _then(_value.copyWith(
-      amount: amount == freezed
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as double,
-      effectingDate: effectingDate == freezed
-          ? _value.effectingDate
-          : effectingDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ));
-  }
-}
-
-/// @nodoc
-abstract class _$$_BalanceResolverCopyWith<$Res>
-    implements $BalanceResolverCopyWith<$Res> {
-  factory _$$_BalanceResolverCopyWith(
-          _$_BalanceResolver value, $Res Function(_$_BalanceResolver) then) =
-      __$$_BalanceResolverCopyWithImpl<$Res>;
-  @override
-  $Res call({double amount, DateTime effectingDate});
-}
-
-/// @nodoc
-class __$$_BalanceResolverCopyWithImpl<$Res>
-    extends _$BalanceResolverCopyWithImpl<$Res>
-    implements _$$_BalanceResolverCopyWith<$Res> {
-  __$$_BalanceResolverCopyWithImpl(
-      _$_BalanceResolver _value, $Res Function(_$_BalanceResolver) _then)
-      : super(_value, (v) => _then(v as _$_BalanceResolver));
-
-  @override
-  _$_BalanceResolver get _value => super._value as _$_BalanceResolver;
-
-  @override
-  $Res call({
-    Object? amount = freezed,
-    Object? effectingDate = freezed,
-  }) {
-    return _then(_$_BalanceResolver(
-      amount: amount == freezed
-          ? _value.amount
-          : amount // ignore: cast_nullable_to_non_nullable
-              as double,
-      effectingDate: effectingDate == freezed
-          ? _value.effectingDate
-          : effectingDate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$_BalanceResolver implements _BalanceResolver {
-  _$_BalanceResolver({required this.amount, required this.effectingDate});
-
-  factory _$_BalanceResolver.fromJson(Map<String, dynamic> json) =>
-      _$$_BalanceResolverFromJson(json);
-
-  @override
-  final double amount;
-
-  /// balance resolver should being applied only if the transaction date is below
-  /// [effectingDate]
-  @override
-  final DateTime effectingDate;
-
-  @override
-  String toString() {
-    return 'BalanceResolver(amount: $amount, effectingDate: $effectingDate)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_BalanceResolver &&
-            const DeepCollectionEquality().equals(other.amount, amount) &&
-            const DeepCollectionEquality()
-                .equals(other.effectingDate, effectingDate));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(amount),
-      const DeepCollectionEquality().hash(effectingDate));
-
-  @JsonKey(ignore: true)
-  @override
-  _$$_BalanceResolverCopyWith<_$_BalanceResolver> get copyWith =>
-      __$$_BalanceResolverCopyWithImpl<_$_BalanceResolver>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_BalanceResolverToJson(
-      this,
-    );
-  }
-}
-
-abstract class _BalanceResolver implements BalanceResolver {
-  factory _BalanceResolver(
-      {required final double amount,
-      required final DateTime effectingDate}) = _$_BalanceResolver;
-
-  factory _BalanceResolver.fromJson(Map<String, dynamic> json) =
-      _$_BalanceResolver.fromJson;
-
-  @override
-  double get amount;
-  @override
-
-  /// balance resolver should being applied only if the transaction date is below
-  /// [effectingDate]
-  DateTime get effectingDate;
-  @override
-  @JsonKey(ignore: true)
-  _$$_BalanceResolverCopyWith<_$_BalanceResolver> get copyWith =>
       throw _privateConstructorUsedError;
 }
