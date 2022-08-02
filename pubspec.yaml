@@ -41,6 +41,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_hooks: ^0.18.5+1
+  flutter_login: ^4.0.0
   form_builder_validators: ^8.3.0
   fpdart: ^0.2.0
   freezed_annotation: ^2.1.0
