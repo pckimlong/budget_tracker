@@ -9,6 +9,7 @@ part of 'tran.dart';
 _$_Tran _$$_TranFromJson(Map<String, dynamic> json) => _$_Tran(
       id: json['id'] as String?,
       categoryId: json['categoryId'] as String,
+      type: $enumDecodeNullable(_$CategoryTypeEnumMap, json['type']),
       date: Tran._dateParserFromJsonNonNull(json['date'] as int),
       note: json['note'] as String? ?? '',
       amount: (json['amount'] as num).toDouble(),
@@ -19,9 +20,15 @@ _$_Tran _$$_TranFromJson(Map<String, dynamic> json) => _$_Tran(
 Map<String, dynamic> _$$_TranToJson(_$_Tran instance) => <String, dynamic>{
       'id': instance.id,
       'categoryId': instance.categoryId,
+      'type': _$CategoryTypeEnumMap[instance.type],
       'date': Tran._dateParserToJsonNonNull(instance.date),
       'note': instance.note,
       'amount': instance.amount,
       'createdAt': Tran._dateParserToJson(instance.createdAt),
       'modifiedAt': Tran._dateParserToJson(instance.modifiedAt),
     };
+
+const _$CategoryTypeEnumMap = {
+  CategoryType.income: 'income',
+  CategoryType.expense: 'expense',
+};

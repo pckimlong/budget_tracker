@@ -117,17 +117,38 @@ class _Item extends ConsumerWidget {
 
     if (data.hasValue) {
       return SelectableItem(
+        margin: const EdgeInsets.only(bottom: 4),
         isSelected: selected,
         onTap: () => Navigator.pop(context, id),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: Row(
             children: [
               type == CategoryType.expense
                   ? Icon(FluentIcons.remove, color: Colors.red)
                   : Icon(FluentIcons.add, color: Colors.green),
               const SizedBox(width: 12),
-              Text(data.valueOrNull!.name),
+              Expanded(child: Text(data.valueOrNull!.name)),
+              DropDownButton(
+                buttonBuilder: (context, onOpen) {
+                  return IconButton(
+                    onPressed: onOpen,
+                    icon: const Icon(FluentIcons.more_vertical),
+                  );
+                },
+                items: [
+                  MenuFlyoutItem(
+                    text: const Text('កែប្រែ'),
+                    leading: const Icon(FluentIcons.edit),
+                    onPressed: () {},
+                  ),
+                  MenuFlyoutItem(
+                    text: Text('លុប', style: TextStyle(color: Colors.red)),
+                    leading: Icon(FluentIcons.delete, color: Colors.red),
+                    onPressed: () {},
+                  ),
+                ],
+              )
             ],
           ),
         ),

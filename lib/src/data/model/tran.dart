@@ -13,6 +13,7 @@ class Tran with _$Tran {
   factory Tran({
     TranId? id,
     required CategoryId categoryId,
+    CategoryType? type,
     @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
         required DateTime date,
     @Default('') String note,

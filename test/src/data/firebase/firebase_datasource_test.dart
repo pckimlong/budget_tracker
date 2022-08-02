@@ -122,6 +122,13 @@ void main() {
           expect(tran.data()!.id, equals(id));
         });
       });
+      test('should update daily balance from previous day', () async {
+        //Arrange
+
+        //Act
+
+        //Assert
+      });
 
       group('update', () {
         test('should throw Failure error if id, amount or category is invalid',

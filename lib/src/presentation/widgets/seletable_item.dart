@@ -47,6 +47,7 @@ class SelectableItem extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Container(
+          
           width: width,
           height: height,
           padding: padding,
@@ -60,9 +61,10 @@ class SelectableItem extends StatelessWidget {
           child: Row(
             children: [
               const SizedBox(width: 8),
-              if (isEndIndicator == false) ...indicator,
+              // if (isEndIndicator == false) ...indicator,
               Expanded(child: child),
-              if (isEndIndicator) ...indicator,
+              const SizedBox(width: 8),
+              // if (isEndIndicator) ...indicator,
             ],
           ),
         ),

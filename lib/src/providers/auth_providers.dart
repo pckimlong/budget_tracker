@@ -9,7 +9,7 @@ class AuthProviders {
 
   static final state = StreamProvider<AuthState>((ref) {
     return ref.watch(firebaseAuthProvider).authStateChanges().map((event) {
-      if (event == null) return const AuthState.uauthenticated();
+      if (event == null) return const AuthState.unauthenticated();
       return AuthState.authenticated(event.uid);
     });
   });
@@ -18,5 +18,5 @@ class AuthProviders {
 @freezed
 class AuthState with _$AuthState {
   const factory AuthState.authenticated(UserId uuid) = _Authenticated;
-  const factory AuthState.uauthenticated() = _Unauthenticated;
+  const factory AuthState.unauthenticated() = _Unauthenticated;
 }

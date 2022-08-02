@@ -155,8 +155,8 @@ class _Category extends HookConsumerWidget {
       validator: FormBuilderValidators.required(),
       readOnly: true,
       onTap: () async {
-        final result = await CategoryPickerDialog.show(context,
-            type: CategoryType.income, initial: selectedId);
+        final result =
+            await CategoryPickerDialog.show(context, type: type, initial: selectedId);
         if (result != null) {
           ref.read(TranProviders.addData.notifier).onCategoryChanged(result);
         }

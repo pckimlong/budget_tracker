@@ -77,9 +77,9 @@ class FirebaseDatasource {
         final type = category.data()!.type;
         final tranformedAmount = amount.transform(type);
 
-        // working with account
         final accountRef = firestore.userDoc;
         final account = await txn.get(accountRef);
+
         if (account.exists) {
           _incrementAccountBalance(txn, increment: tranformedAmount);
         } else {
@@ -176,7 +176,9 @@ class FirebaseDatasource {
     final docRef = firestore.userDoc;
     txn.update(
       docRef,
-      {Account.totalBalanceKey: FieldValue.increment(increment)},
+      {
+        Account.totalBalanceKey: FieldValue.increment(increment),
+      },
     );
   }
 }

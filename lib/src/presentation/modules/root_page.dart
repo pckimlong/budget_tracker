@@ -26,6 +26,7 @@ class RootPage extends HookConsumerWidget {
         ],
       ),
       pane: NavigationPane(
+        displayMode: PaneDisplayMode.open,
         selected: currentIndex.value,
         onChanged: (value) => currentIndex.value = value,
         items: [
@@ -67,27 +68,28 @@ class _AccountBalance extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final totalBalance = ref.watch(AccountProviders.totalBalance);
 
-    return Row(
-      children: [
-        InfoLabel(
-          label: 'សមតុល្យសរុប',
-          child: totalBalance.when(
-            data: (balance) {
-              final formatter = NumberFormat.currency(symbol: "\$ ");
+    return InfoLabel(
+      label: 'សមតុល្យសរុប',
+      child: totalBalance.when(
+        data: (balance) {
+          final formatter = NumberFormat.currency(symbol: "\$ ");
 
-              return Text(
-                formatter.format(balance),
-                style: context.theme.typography.title!.copyWith(
-                  height: 1,
-                ),
-              );
-            },
-            error: (err, _) =>
-                Text(err.toString(), style: TextStyle(color: Colors.red)),
-            loading: () => const ProgressBar(),
-          ),
-        )
-      ],
+          return FittedBox(
+            fit: BoxFit.fitWidth,
+            child: Text(
+              formatter.format(balance),
+              style: context.theme.typography.title!.copyWith(
+                height: 1,
+              ),
+            ),
+          );
+        },
+        error: (err, _) => Text(
+          err.toString(),
+          style: TextStyle(color: Colors.red),
+        ),
+        loading: () => const ProgressBar(),
+      ),
     );
   }
 }

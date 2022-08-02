@@ -22,6 +22,7 @@ Tran _$TranFromJson(Map<String, dynamic> json) {
 mixin _$Tran {
   String? get id => throw _privateConstructorUsedError;
   String get categoryId => throw _privateConstructorUsedError;
+  CategoryType? get type => throw _privateConstructorUsedError;
   @JsonKey(
       name: Tran.dateKey,
       fromJson: Tran._dateParserFromJsonNonNull,
@@ -49,6 +50,7 @@ abstract class $TranCopyWith<$Res> {
   $Res call(
       {String? id,
       String categoryId,
+      CategoryType? type,
       @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
           DateTime date,
       String note,
@@ -71,6 +73,7 @@ class _$TranCopyWithImpl<$Res> implements $TranCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? categoryId = freezed,
+    Object? type = freezed,
     Object? date = freezed,
     Object? note = freezed,
     Object? amount = freezed,
@@ -86,6 +89,10 @@ class _$TranCopyWithImpl<$Res> implements $TranCopyWith<$Res> {
           ? _value.categoryId
           : categoryId // ignore: cast_nullable_to_non_nullable
               as String,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as CategoryType?,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -118,6 +125,7 @@ abstract class _$$_TranCopyWith<$Res> implements $TranCopyWith<$Res> {
   $Res call(
       {String? id,
       String categoryId,
+      CategoryType? type,
       @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
           DateTime date,
       String note,
@@ -141,6 +149,7 @@ class __$$_TranCopyWithImpl<$Res> extends _$TranCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? categoryId = freezed,
+    Object? type = freezed,
     Object? date = freezed,
     Object? note = freezed,
     Object? amount = freezed,
@@ -156,6 +165,10 @@ class __$$_TranCopyWithImpl<$Res> extends _$TranCopyWithImpl<$Res>
           ? _value.categoryId
           : categoryId // ignore: cast_nullable_to_non_nullable
               as String,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as CategoryType?,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -186,6 +199,7 @@ class _$_Tran extends _Tran {
   _$_Tran(
       {this.id,
       required this.categoryId,
+      this.type,
       @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
           required this.date,
       this.note = '',
@@ -202,6 +216,8 @@ class _$_Tran extends _Tran {
   final String? id;
   @override
   final String categoryId;
+  @override
+  final CategoryType? type;
   @override
   @JsonKey(
       name: Tran.dateKey,
@@ -225,7 +241,7 @@ class _$_Tran extends _Tran {
 
   @override
   String toString() {
-    return 'Tran(id: $id, categoryId: $categoryId, date: $date, note: $note, amount: $amount, createdAt: $createdAt, modifiedAt: $modifiedAt)';
+    return 'Tran(id: $id, categoryId: $categoryId, type: $type, date: $date, note: $note, amount: $amount, createdAt: $createdAt, modifiedAt: $modifiedAt)';
   }
 
   @override
@@ -236,6 +252,7 @@ class _$_Tran extends _Tran {
             const DeepCollectionEquality().equals(other.id, id) &&
             const DeepCollectionEquality()
                 .equals(other.categoryId, categoryId) &&
+            const DeepCollectionEquality().equals(other.type, type) &&
             const DeepCollectionEquality().equals(other.date, date) &&
             const DeepCollectionEquality().equals(other.note, note) &&
             const DeepCollectionEquality().equals(other.amount, amount) &&
@@ -250,6 +267,7 @@ class _$_Tran extends _Tran {
       runtimeType,
       const DeepCollectionEquality().hash(id),
       const DeepCollectionEquality().hash(categoryId),
+      const DeepCollectionEquality().hash(type),
       const DeepCollectionEquality().hash(date),
       const DeepCollectionEquality().hash(note),
       const DeepCollectionEquality().hash(amount),
@@ -273,6 +291,7 @@ abstract class _Tran extends Tran {
   factory _Tran(
       {final String? id,
       required final String categoryId,
+      final CategoryType? type,
       @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
           required final DateTime date,
       final String note,
@@ -289,6 +308,8 @@ abstract class _Tran extends Tran {
   String? get id;
   @override
   String get categoryId;
+  @override
+  CategoryType? get type;
   @override
   @JsonKey(
       name: Tran.dateKey,
