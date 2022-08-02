@@ -20,7 +20,9 @@ Category _$CategoryFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Category {
-  String? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: Category.idKey)
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: Category.typeKey)
   CategoryType get type => throw _privateConstructorUsedError;
   @JsonKey(name: Category.nameKey)
   String get name => throw _privateConstructorUsedError;
@@ -38,8 +40,8 @@ abstract class $CategoryCopyWith<$Res> {
   factory $CategoryCopyWith(Category value, $Res Function(Category) then) =
       _$CategoryCopyWithImpl<$Res>;
   $Res call(
-      {String? id,
-      CategoryType type,
+      {@JsonKey(name: Category.idKey) int? id,
+      @JsonKey(name: Category.typeKey) CategoryType type,
       @JsonKey(name: Category.nameKey) String name,
       @JsonKey(name: Category.createdAtKey) DateTime? createdAt});
 }
@@ -63,7 +65,7 @@ class _$CategoryCopyWithImpl<$Res> implements $CategoryCopyWith<$Res> {
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -87,8 +89,8 @@ abstract class _$$_CategoryCopyWith<$Res> implements $CategoryCopyWith<$Res> {
       __$$_CategoryCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String? id,
-      CategoryType type,
+      {@JsonKey(name: Category.idKey) int? id,
+      @JsonKey(name: Category.typeKey) CategoryType type,
       @JsonKey(name: Category.nameKey) String name,
       @JsonKey(name: Category.createdAtKey) DateTime? createdAt});
 }
@@ -114,7 +116,7 @@ class __$$_CategoryCopyWithImpl<$Res> extends _$CategoryCopyWithImpl<$Res>
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       type: type == freezed
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -135,8 +137,8 @@ class __$$_CategoryCopyWithImpl<$Res> extends _$CategoryCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Category implements _Category {
   _$_Category(
-      {this.id,
-      required this.type,
+      {@JsonKey(name: Category.idKey) this.id,
+      @JsonKey(name: Category.typeKey) required this.type,
       @JsonKey(name: Category.nameKey) required this.name,
       @JsonKey(name: Category.createdAtKey) this.createdAt});
 
@@ -144,8 +146,10 @@ class _$_Category implements _Category {
       _$$_CategoryFromJson(json);
 
   @override
-  final String? id;
+  @JsonKey(name: Category.idKey)
+  final int? id;
   @override
+  @JsonKey(name: Category.typeKey)
   final CategoryType type;
   @override
   @JsonKey(name: Category.nameKey)
@@ -194,8 +198,8 @@ class _$_Category implements _Category {
 
 abstract class _Category implements Category {
   factory _Category(
-          {final String? id,
-          required final CategoryType type,
+          {@JsonKey(name: Category.idKey) final int? id,
+          @JsonKey(name: Category.typeKey) required final CategoryType type,
           @JsonKey(name: Category.nameKey) required final String name,
           @JsonKey(name: Category.createdAtKey) final DateTime? createdAt}) =
       _$_Category;
@@ -203,8 +207,10 @@ abstract class _Category implements Category {
   factory _Category.fromJson(Map<String, dynamic> json) = _$_Category.fromJson;
 
   @override
-  String? get id;
+  @JsonKey(name: Category.idKey)
+  int? get id;
   @override
+  @JsonKey(name: Category.typeKey)
   CategoryType get type;
   @override
   @JsonKey(name: Category.nameKey)

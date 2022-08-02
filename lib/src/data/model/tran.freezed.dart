@@ -20,22 +20,24 @@ Tran _$TranFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Tran {
-  String? get id => throw _privateConstructorUsedError;
-  String get categoryId => throw _privateConstructorUsedError;
-  @JsonKey(
-      name: Tran.dateKey,
-      fromJson: Tran._dateParserFromJsonNonNull,
-      toJson: Tran._dateParserToJsonNonNull)
+  @JsonKey(name: Tran.idKey)
+  int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: Tran.categoryIdKey)
+  int get categoryId => throw _privateConstructorUsedError;
+  @JsonKey(name: Tran.dateKey)
+  @JsonKey(name: Tran.dateKey)
   DateTime get date => throw _privateConstructorUsedError;
+  @JsonKey(name: Tran.noteKey)
   String get note => throw _privateConstructorUsedError;
+  @JsonKey(name: Tran.amountKey)
   double get amount => throw _privateConstructorUsedError;
-  @JsonKey(
-      name: Tran.createdAtKey,
-      fromJson: Tran._dateParserFromJson,
-      toJson: Tran._dateParserToJson)
+  @JsonKey(name: Tran.createdAtKey)
   DateTime? get createdAt => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
-  DateTime? get modifiedAt => throw _privateConstructorUsedError;
+  @JsonKey(name: Tran.modifiedAtKey)
+  DateTime? get modifiedAt => throw _privateConstructorUsedError; // read only
+  double get income => throw _privateConstructorUsedError;
+  double get expense => throw _privateConstructorUsedError;
+  double get balance => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,16 +49,16 @@ abstract class $TranCopyWith<$Res> {
   factory $TranCopyWith(Tran value, $Res Function(Tran) then) =
       _$TranCopyWithImpl<$Res>;
   $Res call(
-      {String? id,
-      String categoryId,
-      @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
-          DateTime date,
-      String note,
-      double amount,
-      @JsonKey(name: Tran.createdAtKey, fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
-          DateTime? createdAt,
-      @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
-          DateTime? modifiedAt});
+      {@JsonKey(name: Tran.idKey) int? id,
+      @JsonKey(name: Tran.categoryIdKey) int categoryId,
+      @JsonKey(name: Tran.dateKey) @JsonKey(name: Tran.dateKey) DateTime date,
+      @JsonKey(name: Tran.noteKey) String note,
+      @JsonKey(name: Tran.amountKey) double amount,
+      @JsonKey(name: Tran.createdAtKey) DateTime? createdAt,
+      @JsonKey(name: Tran.modifiedAtKey) DateTime? modifiedAt,
+      double income,
+      double expense,
+      double balance});
 }
 
 /// @nodoc
@@ -76,16 +78,19 @@ class _$TranCopyWithImpl<$Res> implements $TranCopyWith<$Res> {
     Object? amount = freezed,
     Object? createdAt = freezed,
     Object? modifiedAt = freezed,
+    Object? income = freezed,
+    Object? expense = freezed,
+    Object? balance = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       categoryId: categoryId == freezed
           ? _value.categoryId
           : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -106,6 +111,18 @@ class _$TranCopyWithImpl<$Res> implements $TranCopyWith<$Res> {
           ? _value.modifiedAt
           : modifiedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      income: income == freezed
+          ? _value.income
+          : income // ignore: cast_nullable_to_non_nullable
+              as double,
+      expense: expense == freezed
+          ? _value.expense
+          : expense // ignore: cast_nullable_to_non_nullable
+              as double,
+      balance: balance == freezed
+          ? _value.balance
+          : balance // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -116,16 +133,16 @@ abstract class _$$_TranCopyWith<$Res> implements $TranCopyWith<$Res> {
       __$$_TranCopyWithImpl<$Res>;
   @override
   $Res call(
-      {String? id,
-      String categoryId,
-      @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
-          DateTime date,
-      String note,
-      double amount,
-      @JsonKey(name: Tran.createdAtKey, fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
-          DateTime? createdAt,
-      @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
-          DateTime? modifiedAt});
+      {@JsonKey(name: Tran.idKey) int? id,
+      @JsonKey(name: Tran.categoryIdKey) int categoryId,
+      @JsonKey(name: Tran.dateKey) @JsonKey(name: Tran.dateKey) DateTime date,
+      @JsonKey(name: Tran.noteKey) String note,
+      @JsonKey(name: Tran.amountKey) double amount,
+      @JsonKey(name: Tran.createdAtKey) DateTime? createdAt,
+      @JsonKey(name: Tran.modifiedAtKey) DateTime? modifiedAt,
+      double income,
+      double expense,
+      double balance});
 }
 
 /// @nodoc
@@ -146,16 +163,19 @@ class __$$_TranCopyWithImpl<$Res> extends _$TranCopyWithImpl<$Res>
     Object? amount = freezed,
     Object? createdAt = freezed,
     Object? modifiedAt = freezed,
+    Object? income = freezed,
+    Object? expense = freezed,
+    Object? balance = freezed,
   }) {
     return _then(_$_Tran(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       categoryId: categoryId == freezed
           ? _value.categoryId
           : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       date: date == freezed
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -176,6 +196,18 @@ class __$$_TranCopyWithImpl<$Res> extends _$TranCopyWithImpl<$Res>
           ? _value.modifiedAt
           : modifiedAt // ignore: cast_nullable_to_non_nullable
               as DateTime?,
+      income: income == freezed
+          ? _value.income
+          : income // ignore: cast_nullable_to_non_nullable
+              as double,
+      expense: expense == freezed
+          ? _value.expense
+          : expense // ignore: cast_nullable_to_non_nullable
+              as double,
+      balance: balance == freezed
+          ? _value.balance
+          : balance // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -184,48 +216,64 @@ class __$$_TranCopyWithImpl<$Res> extends _$TranCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Tran extends _Tran {
   _$_Tran(
-      {this.id,
-      required this.categoryId,
-      @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
+      {@JsonKey(name: Tran.idKey)
+          this.id,
+      @JsonKey(name: Tran.categoryIdKey)
+          required this.categoryId,
+      @JsonKey(name: Tran.dateKey)
+      @JsonKey(name: Tran.dateKey)
           required this.date,
-      this.note = '',
-      required this.amount,
-      @JsonKey(name: Tran.createdAtKey, fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+      @JsonKey(name: Tran.noteKey)
+          this.note = '',
+      @JsonKey(name: Tran.amountKey)
+          required this.amount,
+      @JsonKey(name: Tran.createdAtKey)
           this.createdAt,
-      @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
-          this.modifiedAt})
+      @JsonKey(name: Tran.modifiedAtKey)
+          this.modifiedAt,
+      this.income = 0,
+      this.expense = 0,
+      this.balance = 0})
       : super._();
 
   factory _$_Tran.fromJson(Map<String, dynamic> json) => _$$_TranFromJson(json);
 
   @override
-  final String? id;
+  @JsonKey(name: Tran.idKey)
+  final int? id;
   @override
-  final String categoryId;
+  @JsonKey(name: Tran.categoryIdKey)
+  final int categoryId;
   @override
-  @JsonKey(
-      name: Tran.dateKey,
-      fromJson: Tran._dateParserFromJsonNonNull,
-      toJson: Tran._dateParserToJsonNonNull)
+  @JsonKey(name: Tran.dateKey)
+  @JsonKey(name: Tran.dateKey)
   final DateTime date;
   @override
-  @JsonKey()
+  @JsonKey(name: Tran.noteKey)
   final String note;
   @override
+  @JsonKey(name: Tran.amountKey)
   final double amount;
   @override
-  @JsonKey(
-      name: Tran.createdAtKey,
-      fromJson: Tran._dateParserFromJson,
-      toJson: Tran._dateParserToJson)
+  @JsonKey(name: Tran.createdAtKey)
   final DateTime? createdAt;
   @override
-  @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+  @JsonKey(name: Tran.modifiedAtKey)
   final DateTime? modifiedAt;
+// read only
+  @override
+  @JsonKey()
+  final double income;
+  @override
+  @JsonKey()
+  final double expense;
+  @override
+  @JsonKey()
+  final double balance;
 
   @override
   String toString() {
-    return 'Tran(id: $id, categoryId: $categoryId, date: $date, note: $note, amount: $amount, createdAt: $createdAt, modifiedAt: $modifiedAt)';
+    return 'Tran(id: $id, categoryId: $categoryId, date: $date, note: $note, amount: $amount, createdAt: $createdAt, modifiedAt: $modifiedAt, income: $income, expense: $expense, balance: $balance)';
   }
 
   @override
@@ -241,7 +289,10 @@ class _$_Tran extends _Tran {
             const DeepCollectionEquality().equals(other.amount, amount) &&
             const DeepCollectionEquality().equals(other.createdAt, createdAt) &&
             const DeepCollectionEquality()
-                .equals(other.modifiedAt, modifiedAt));
+                .equals(other.modifiedAt, modifiedAt) &&
+            const DeepCollectionEquality().equals(other.income, income) &&
+            const DeepCollectionEquality().equals(other.expense, expense) &&
+            const DeepCollectionEquality().equals(other.balance, balance));
   }
 
   @JsonKey(ignore: true)
@@ -254,7 +305,10 @@ class _$_Tran extends _Tran {
       const DeepCollectionEquality().hash(note),
       const DeepCollectionEquality().hash(amount),
       const DeepCollectionEquality().hash(createdAt),
-      const DeepCollectionEquality().hash(modifiedAt));
+      const DeepCollectionEquality().hash(modifiedAt),
+      const DeepCollectionEquality().hash(income),
+      const DeepCollectionEquality().hash(expense),
+      const DeepCollectionEquality().hash(balance));
 
   @JsonKey(ignore: true)
   @override
@@ -271,43 +325,56 @@ class _$_Tran extends _Tran {
 
 abstract class _Tran extends Tran {
   factory _Tran(
-      {final String? id,
-      required final String categoryId,
-      @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
+      {@JsonKey(name: Tran.idKey)
+          final int? id,
+      @JsonKey(name: Tran.categoryIdKey)
+          required final int categoryId,
+      @JsonKey(name: Tran.dateKey)
+      @JsonKey(name: Tran.dateKey)
           required final DateTime date,
-      final String note,
-      required final double amount,
-      @JsonKey(name: Tran.createdAtKey, fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+      @JsonKey(name: Tran.noteKey)
+          final String note,
+      @JsonKey(name: Tran.amountKey)
+          required final double amount,
+      @JsonKey(name: Tran.createdAtKey)
           final DateTime? createdAt,
-      @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
-          final DateTime? modifiedAt}) = _$_Tran;
+      @JsonKey(name: Tran.modifiedAtKey)
+          final DateTime? modifiedAt,
+      final double income,
+      final double expense,
+      final double balance}) = _$_Tran;
   _Tran._() : super._();
 
   factory _Tran.fromJson(Map<String, dynamic> json) = _$_Tran.fromJson;
 
   @override
-  String? get id;
+  @JsonKey(name: Tran.idKey)
+  int? get id;
   @override
-  String get categoryId;
+  @JsonKey(name: Tran.categoryIdKey)
+  int get categoryId;
   @override
-  @JsonKey(
-      name: Tran.dateKey,
-      fromJson: Tran._dateParserFromJsonNonNull,
-      toJson: Tran._dateParserToJsonNonNull)
+  @JsonKey(name: Tran.dateKey)
+  @JsonKey(name: Tran.dateKey)
   DateTime get date;
   @override
+  @JsonKey(name: Tran.noteKey)
   String get note;
   @override
+  @JsonKey(name: Tran.amountKey)
   double get amount;
   @override
-  @JsonKey(
-      name: Tran.createdAtKey,
-      fromJson: Tran._dateParserFromJson,
-      toJson: Tran._dateParserToJson)
+  @JsonKey(name: Tran.createdAtKey)
   DateTime? get createdAt;
   @override
-  @JsonKey(fromJson: Tran._dateParserFromJson, toJson: Tran._dateParserToJson)
+  @JsonKey(name: Tran.modifiedAtKey)
   DateTime? get modifiedAt;
+  @override // read only
+  double get income;
+  @override
+  double get expense;
+  @override
+  double get balance;
   @override
   @JsonKey(ignore: true)
   _$$_TranCopyWith<_$_Tran> get copyWith => throw _privateConstructorUsedError;

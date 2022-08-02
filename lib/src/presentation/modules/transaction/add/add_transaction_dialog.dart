@@ -140,7 +140,7 @@ class _Category extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedId = ref.watch(TranProviders.addData
-        .select((value) => value.categoryId.isBlank ? null : value.categoryId));
+        .select((value) => value.categoryId == 0 ? null : value.categoryId));
     final controller = useTextEditingController();
     final name = ref.watch(
         CategoryProviders.ofId(selectedId).select((value) => value.valueOrNull?.name));
@@ -155,8 +155,8 @@ class _Category extends HookConsumerWidget {
       validator: FormBuilderValidators.required(),
       readOnly: true,
       onTap: () async {
-        final result = await CategoryPickerDialog.show(context,
-            type: CategoryType.income, initial: selectedId);
+        final result =
+            await CategoryPickerDialog.show(context, type: type, initial: selectedId);
         if (result != null) {
           ref.read(TranProviders.addData.notifier).onCategoryChanged(result);
         }
@@ -204,10 +204,10 @@ class _Amount extends HookConsumerWidget {
       color: color,
     );
 
-    ref.listen<String>(
+    ref.listen<int>(
       TranProviders.addData.select((value) => value.categoryId),
       (previous, next) {
-        if (previous.isNullOrBlank && next.isNotNullOrBlank) {
+        if (previous == 0 && next != 0) {
           focus.requestFocus();
         }
       },

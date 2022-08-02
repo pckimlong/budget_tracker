@@ -16,6 +16,13 @@ class AuthProviders {
       StateNotifierProvider<AuthNotifier, AsyncValue<AuthState>>((ref) {
     return AuthNotifier(ref.read);
   });
+
+  static final uuid = Provider<String?>((ref) {
+    return ref
+        .watch(state)
+        .whenData((state) => state.whenOrNull(authenticated: (uuid) => uuid))
+        .valueOrNull;
+  });
 }
 
 class SignInNotifier extends StateNotifier<AsyncValue<bool>> {

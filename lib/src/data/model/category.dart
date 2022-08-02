@@ -7,16 +7,18 @@ part 'category.g.dart';
 
 enum CategoryType { income, expense }
 
-typedef CategoryId = String;
+typedef CategoryId = int;
 
 @freezed
 class Category with _$Category {
-  static const createdAtKey = "createdAt";
+  static const idKey = "id";
+  static const createdAtKey = "created_at";
   static const nameKey = "name";
+  static const typeKey = "type";
 
   factory Category({
-    CategoryId? id,
-    required CategoryType type,
+    @JsonKey(name: Category.idKey) CategoryId? id,
+    @JsonKey(name: Category.typeKey) required CategoryType type,
     @JsonKey(name: Category.nameKey) required String name,
     @JsonKey(name: Category.createdAtKey) DateTime? createdAt,
   }) = _Category;

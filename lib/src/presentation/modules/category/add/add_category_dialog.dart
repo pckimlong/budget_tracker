@@ -25,6 +25,12 @@ class AddCategoryDialog extends HookConsumerWidget {
     final controller = useTextEditingController();
     final saveState = ref.watch(CategoryProviders.add);
 
+    ref.listen<AsyncValue<bool>>(CategoryProviders.add, (previous, next) {
+      if (previous?.isLoading == true && next == const AsyncValue.data(true)) {
+        Navigator.of(context).pop();
+      }
+    });
+
     return ContentDialog(
       title: Text('បង្កើតប្រភេទ${type.khmer()}ថ្មី'),
       content: Column(

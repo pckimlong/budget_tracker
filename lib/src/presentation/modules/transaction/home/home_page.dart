@@ -95,9 +95,9 @@ class _Item extends ConsumerWidget {
           ),
           Text(category.value?.name ?? ""),
           Text(data.note),
-          Text(data.amount.moneyFormat()),
-          const Text('data'),
-          const Text('balance'),
+          Text(data.income.moneyFormat()),
+          Text(data.expense.moneyFormat()),
+          Text(data.balance.moneyFormat()),
         ],
       ),
     );

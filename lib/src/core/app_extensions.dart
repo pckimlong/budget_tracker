@@ -78,6 +78,10 @@ extension DateTimeX on DateTime {
     return DateFormat('dd-MM-yyyy').format(this);
   }
 
+  String supabaseDateOnly() {
+    return DateFormat('yyyy-MM-dd').format(this);
+  }
+
   bool get isYesterday {
     final yesterday = DateTime.now().subtract(const Duration(days: 1));
     return yesterday.day == day && yesterday.month == month && yesterday.year == year;

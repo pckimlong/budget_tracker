@@ -48,7 +48,7 @@ class AddTranNotifier extends StateNotifier<AsyncValue<bool>> {
 class AddTranDataNotifier extends StateNotifier<Tran> {
   AddTranDataNotifier()
       : super(Tran(
-          categoryId: '',
+          categoryId: 0,
           date: DateTime.now(),
           amount: 0,
         ));

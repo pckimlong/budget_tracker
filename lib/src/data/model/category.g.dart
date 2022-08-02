@@ -7,12 +7,12 @@ part of 'category.dart';
 // **************************************************************************
 
 _$_Category _$$_CategoryFromJson(Map<String, dynamic> json) => _$_Category(
-      id: json['id'] as String?,
+      id: json['id'] as int?,
       type: $enumDecode(_$CategoryTypeEnumMap, json['type']),
       name: json['name'] as String,
-      createdAt: json['createdAt'] == null
+      createdAt: json['created_at'] == null
           ? null
-          : DateTime.parse(json['createdAt'] as String),
+          : DateTime.parse(json['created_at'] as String),
     );
 
 Map<String, dynamic> _$$_CategoryToJson(_$_Category instance) =>
@@ -20,7 +20,7 @@ Map<String, dynamic> _$$_CategoryToJson(_$_Category instance) =>
       'id': instance.id,
       'type': _$CategoryTypeEnumMap[instance.type]!,
       'name': instance.name,
-      'createdAt': instance.createdAt?.toIso8601String(),
+      'created_at': instance.createdAt?.toIso8601String(),
     };
 
 const _$CategoryTypeEnumMap = {
