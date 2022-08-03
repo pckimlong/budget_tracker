@@ -189,6 +189,7 @@ class _Category extends HookConsumerWidget {
 
     return TextFormBox(
       controller: controller,
+      style: context.theme.typography.body,
       validator: FormBuilderValidators.required(),
       readOnly: true,
       onTap: () async {
@@ -214,6 +215,7 @@ class _Note extends HookConsumerWidget {
 
     return TextFormBox(
       controller: controller,
+      style: context.theme.typography.body,
       onChanged: (value) {
         EasyDebounce.debounce('note', const Duration(milliseconds: 300), () {
           ref.read(TranProviders.updateData(id).notifier).onNoteChanged(value);

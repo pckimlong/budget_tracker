@@ -45,6 +45,7 @@ class AddCategoryDialog extends HookConsumerWidget {
           Form(
             key: formKey,
             child: TextFormBox(
+              style: context.theme.typography.body,
               autofocus: true,
               controller: controller,
               placeholder: 'Enter category name',
