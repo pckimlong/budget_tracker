@@ -6,7 +6,6 @@ import 'package:budget_tracker/src/data/model/tran.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/delete/delete_transaction_dialog.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/edit/edit_transaction_dialog.dart';
 import 'package:budget_tracker/src/presentation/widgets/add_tran_button.dart';
-import 'package:budget_tracker/src/presentation/widgets/my_box.dart';
 import 'package:budget_tracker/src/presentation/widgets/my_date_pickeer.dart';
 import 'package:budget_tracker/src/providers/category_providers.dart';
 import 'package:budget_tracker/src/providers/tran_providers.dart';
@@ -29,7 +28,7 @@ class HomePage extends ConsumerWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Spacer(),
+            const _Balance(),
             DefaultTextStyle(
               style: context.theme.typography.caption!,
               child: Padding(
@@ -72,34 +71,28 @@ class _Balance extends ConsumerWidget {
 
     return Row(
       children: [
-        MyBox(
-          child: InfoLabel(
-            label: 'ចំណូលសរុប',
-            child: totalIncome.maybeWhen(
-              data: (data) => Text(data.moneyFormat()),
-              orElse: () => const Text('...'),
-            ),
-          ),
+        Text(
+          "ចំណូល ${totalIncome.maybeWhen(
+            data: (data) => data.moneyFormat(),
+            orElse: () => '...',
+          )}",
+          style: context.theme.typography.body?.copyWith(color: Colors.green),
         ),
         const SizedBox(width: 20),
-        MyBox(
-          child: InfoLabel(
-            label: 'ចំណាយសរុប',
-            child: totalExpense.maybeWhen(
-              data: (data) => Text(data.moneyFormat()),
-              orElse: () => const Text('...'),
-            ),
-          ),
+        Text(
+          "ចំណាយ ${totalExpense.maybeWhen(
+            data: (data) => data.moneyFormat(),
+            orElse: () => '...',
+          )}",
+          style: context.theme.typography.body?.copyWith(color: Colors.red),
         ),
         const SizedBox(width: 20),
-        MyBox(
-          child: InfoLabel(
-            label: 'នៅសល់សរុប',
-            child: total.maybeWhen(
-              data: (data) => Text(data.moneyFormat()),
-              orElse: () => const Text('...'),
-            ),
-          ),
+        Text(
+          "សរុប ${total.maybeWhen(
+            data: (data) => data.moneyFormat(),
+            orElse: () => '...',
+          )}",
+          style: context.theme.typography.body,
         ),
       ],
     );

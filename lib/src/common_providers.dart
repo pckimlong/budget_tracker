@@ -1,4 +1,5 @@
 import 'package:budget_tracker/src/data/firebase/firebase_datasource.dart';
+import 'package:budget_tracker/src/providers/auth_providers.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -12,5 +13,9 @@ final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
 });
 
 final datasourceProvider = Provider<FirebaseDatasource>((ref) {
-  return FirebaseDatasource(firestore: ref.watch(firestoreProvider));
+  final userId = ref.watch(AuthProviders.uuid);
+  return FirebaseDatasource(
+    firestore: ref.watch(firestoreProvider),
+    userId: userId,
+  );
 });

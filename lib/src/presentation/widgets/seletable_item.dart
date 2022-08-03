@@ -44,10 +44,10 @@ class SelectableItem extends StatelessWidget {
 
     return Material(
       color: Colors.transparent,
+      textStyle: context.theme.typography.body,
       child: InkWell(
         onTap: onTap,
         child: Container(
-          
           width: width,
           height: height,
           padding: padding,

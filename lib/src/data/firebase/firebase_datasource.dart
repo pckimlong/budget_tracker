@@ -14,16 +14,21 @@ import '../model/setting.dart';
 class FirebaseDatasource {
   FirebaseDatasource({
     required this.firestore,
-  });
+    required this.userId,
+  }) {
+    _createAccountIfNotExisted();
+  }
 
   final FirebaseFirestore firestore;
+  final UserId? userId;
 
   Future<Either<Failure, IList<Tran>>> findAllTranPagination(
     DateTime? createdAt,
     CategoryId? categoryId,
     int limit,
   ) async {
-    var query = firestore.tranCollection
+    var query = firestore
+        .tranCollection(userId)
         .orderBy(Tran.createdAtKey, descending: true)
         .limit(limit);
 
@@ -39,7 +44,7 @@ class FirebaseDatasource {
   }
 
   Future<void> updateSetting(Setting newSetting) async {
-    final ref = firestore.userDoc;
+    final ref = firestore.userDoc(userId);
     final userdoc = await ref.get();
     if (userdoc.exists) {
       await ref.update({'setting': newSetting.toJson()});
@@ -47,7 +52,8 @@ class FirebaseDatasource {
   }
 
   Stream<Either<Failure, IList<Tran>>> streamAllTranByDate(DateTime date) {
-    return firestore.tranCollection
+    return firestore
+        .tranCollection(userId)
         .where(Tran.dateKey, isEqualTo: date.dateOnly().millisecondsSinceEpoch)
         .orderBy(Tran.createdAtKey)
         .snapshots()
@@ -55,14 +61,16 @@ class FirebaseDatasource {
   }
 
   Stream<Either<Failure, IList<Category>>> streamAllCategory() {
-    return firestore.categoryCollection
+    return firestore
+        .categoryCollection(userId)
         .orderBy(Category.nameKey)
         .snapshots()
         .map((event) => right(event.docs.map((e) => e.data()!).toIList()));
   }
 
   Stream<Either<Failure, IList<BalanceAdjustmentHistory>>> streamBalanceAdjustment() {
-    return firestore.balanceAdjustmentCollection
+    return firestore
+        .balanceAdjustmentCollection(userId)
         .orderBy('date', descending: true)
         .snapshots()
         .map((event) => right(event.docs.map((e) => e.data()!).toIList()));
@@ -70,7 +78,7 @@ class FirebaseDatasource {
 
   Future<void> adjustBalance(double newBalance) async {
     await firestore.runTransaction((txn) async {
-      final accRef = firestore.userDoc;
+      final accRef = firestore.userDoc(userId);
       final accDoc = await txn.get(accRef);
       if (accDoc.data() == null || !accDoc.exists) {
         txn.set(accRef, Account(totalBalance: newBalance));
@@ -79,7 +87,7 @@ class FirebaseDatasource {
       }
       final oldBalance = accDoc.data()?.totalBalance ?? 0;
 
-      final adjustmentRef = firestore.balanceAdjustmentCollection.doc();
+      final adjustmentRef = firestore.balanceAdjustmentCollection(userId).doc();
       txn.set(
         adjustmentRef,
         BalanceAdjustmentHistory(
@@ -93,7 +101,7 @@ class FirebaseDatasource {
   }
 
   Future<CategoryId?> createCategory(Category model) async {
-    final ref = firestore.categoryCollection.doc();
+    final ref = firestore.categoryCollection(userId).doc();
     await ref.set(model.copyWith(
       id: ref.id,
       createdAt: DateTime.now(),
@@ -105,7 +113,8 @@ class FirebaseDatasource {
       DateTime startDate, DateTime endDate) async {
     final start = startDate.dateOnly().millisecondsSinceEpoch;
     final end = endDate.dateOnly().millisecondsSinceEpoch;
-    final result = await firestore.tranCollection
+    final result = await firestore
+        .tranCollection(userId)
         .where(Tran.dateKey, isGreaterThanOrEqualTo: start)
         .where(Tran.dateKey, isLessThanOrEqualTo: end)
         .get();
@@ -114,17 +123,17 @@ class FirebaseDatasource {
   }
 
   Future<void> updateCategory(Category model) async {
-    final ref = firestore.categoryCollection.doc(model.id);
+    final ref = firestore.categoryCollection(userId).doc(model.id);
     ref.set(model.copyWith(createdAt: DateTime.now()));
   }
 
   Future<void> deleteCategory(CategoryId id) async {
-    final ref = firestore.categoryCollection.doc(id);
+    final ref = firestore.categoryCollection(userId).doc(id);
     await ref.delete();
   }
 
   Stream<Either<Failure, Account>> watchAccount() {
-    return firestore.userDoc.snapshots().map(
+    return firestore.userDoc(userId).snapshots().map(
       (event) {
         if (event.data() == null) return right(Account());
         return right(event.data()!);
@@ -142,7 +151,7 @@ class FirebaseDatasource {
         }
 
         // Working with category
-        final categoryRef = firestore.categoryCollection.doc(data.categoryId);
+        final categoryRef = firestore.categoryCollection(userId).doc(data.categoryId);
         final category = await txn.get(categoryRef);
         if (!category.exists || category.data() == null) {
           throw Failure.notFound('Invalid category id: ${data.categoryId}');
@@ -150,16 +159,9 @@ class FirebaseDatasource {
         final type = category.data()!.type;
         final tranformedAmount = amount.transform(type);
 
-        final accountRef = firestore.userDoc;
-        final account = await txn.get(accountRef);
+        _incrementAccountBalance(txn, increment: tranformedAmount);
 
-        if (account.exists) {
-          _incrementAccountBalance(txn, increment: tranformedAmount);
-        } else {
-          txn.set(accountRef, Account(totalBalance: tranformedAmount));
-        }
-
-        final docRef = firestore.tranCollection.doc();
+        final docRef = firestore.tranCollection(userId).doc();
         txn.set(
           docRef,
           data.copyWith(
@@ -178,11 +180,12 @@ class FirebaseDatasource {
   Future<void> deleteTran(TranId id) async {
     await firestore.runTransaction(
       (txn) async {
-        final dataRef = firestore.tranCollection.doc(id);
+        final dataRef = firestore.tranCollection(userId).doc(id);
         final data = await txn.get(dataRef);
         if (!data.exists) throw Failure.notFound('Cannot find tran with id: $id');
         final tran = data.data()!;
-        final cate = await txn.get(firestore.categoryCollection.doc(tran.categoryId));
+        final cate =
+            await txn.get(firestore.categoryCollection(userId).doc(tran.categoryId));
         final type = cate.data()!.type;
         double amount;
 
@@ -204,7 +207,7 @@ class FirebaseDatasource {
   }
 
   Future<Tran> findOneTran(String id) async {
-    final result = await firestore.tranCollection.doc(id).get();
+    final result = await firestore.tranCollection(userId).doc(id).get();
     if (!result.exists || result.data() == null) throw const Failure.notFound();
     return result.data()!;
   }
@@ -221,16 +224,17 @@ class FirebaseDatasource {
         }
 
         // Working with category
-        final categoryRef = firestore.categoryCollection.doc(data.categoryId);
+        final categoryRef = firestore.categoryCollection(userId).doc(data.categoryId);
         final category = await txn.get(categoryRef);
         if (!category.exists || category.data() == null) {
           throw Failure.notFound('Invalid category id: ${data.categoryId}');
         }
 
-        final docRef = firestore.tranCollection.doc(data.id);
+        final docRef = firestore.tranCollection(userId).doc(data.id);
         final oldData = await txn.get(docRef);
         if (oldData.data()?.categoryId != data.categoryId) {
-          final oldRef = firestore.categoryCollection.doc(oldData.data()?.categoryId);
+          final oldRef =
+              firestore.categoryCollection(userId).doc(oldData.data()?.categoryId);
           final oldCate = await txn.get(oldRef);
           if (oldCate.data()?.type != category.data()?.type) {
             throw const Failure.invalidValue(
@@ -251,8 +255,17 @@ class FirebaseDatasource {
     );
   }
 
+  Future<void> _createAccountIfNotExisted() async {
+    final accountRef = firestore.userDoc(userId);
+    final account = await accountRef.get();
+
+    if (account.exists || account.data() == null) {
+      accountRef.set(Account());
+    }
+  }
+
   void _incrementAccountBalance(Transaction txn, {required double increment}) {
-    final docRef = firestore.userDoc;
+    final docRef = firestore.userDoc(userId);
     txn.update(
       docRef,
       {

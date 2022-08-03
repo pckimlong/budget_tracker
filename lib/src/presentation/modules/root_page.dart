@@ -17,74 +17,77 @@ class RootPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentIndex = useState<int>(0);
 
-    return NavigationView(
-      content: NavigationBody(
-        index: currentIndex.value,
-        children: const [
-          HomePage(),
-          TransactionListPage(),
-          ReportPage(),
-        ],
-      ),
-      pane: NavigationPane(
-        displayMode: PaneDisplayMode.open,
-        selected: currentIndex.value,
-        onChanged: (value) => currentIndex.value = value,
-        items: [
-          PaneItemHeader(
-            header: Container(
-              margin: const EdgeInsets.only(bottom: 10),
-              padding: const EdgeInsets.all(8.0),
-              child: const _AccountBalance(),
-            ),
-          ),
-          PaneItem(
-            icon: const Icon(FluentIcons.home),
-            title: const Text('ទំព័រដើម'),
-          ),
-          PaneItem(
-            icon: const Icon(FluentIcons.list),
-            title: const Text('ប្រវត្តិចំណូលចំណាយ'),
-          ),
-          PaneItem(
-            icon: const Icon(FluentIcons.report_document),
-            title: const Text('របាយការណ៍'),
-          ),
-          // PaneItemSeparator(),
-          // PaneItemHeader(
-          //   header: const Padding(
-          //     padding: EdgeInsets.only(top: 20, left: 6),
-          //     child: AddTranButtons(),
-          //   ),
-          // ),
-        ],
-        footerItems: [
-          PaneItemSeparator(),
-          PaneItemHeader(
-            header: Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: Row(
-                children: [
-                  const SizedBox(width: 4),
-                  const CircleAvatar(
-                    radius: 12,
-                    child: Icon(Icons.person, size: 16),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      ref.watch(firebaseAuthProvider).currentUser?.email ?? "",
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(FluentIcons.settings),
-                    onPressed: () => SettingDialog.show(context),
-                  ),
-                ],
+    return DefaultTextStyle(
+      style: context.theme.typography.body!,
+      child: NavigationView(
+        content: NavigationBody(
+          index: currentIndex.value,
+          children: const [
+            HomePage(),
+            TransactionListPage(),
+            ReportPage(),
+          ],
+        ),
+        pane: NavigationPane(
+          displayMode: PaneDisplayMode.open,
+          selected: currentIndex.value,
+          onChanged: (value) => currentIndex.value = value,
+          items: [
+            PaneItemHeader(
+              header: Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.all(8.0),
+                child: const _AccountBalance(),
               ),
             ),
-          ),
-        ],
+            PaneItem(
+              icon: const Icon(FluentIcons.home),
+              title: const Text('ទំព័រដើម'),
+            ),
+            PaneItem(
+              icon: const Icon(FluentIcons.list),
+              title: const Text('ប្រវត្តិចំណូលចំណាយ'),
+            ),
+            PaneItem(
+              icon: const Icon(FluentIcons.report_document),
+              title: const Text('របាយការណ៍'),
+            ),
+            // PaneItemSeparator(),
+            // PaneItemHeader(
+            //   header: const Padding(
+            //     padding: EdgeInsets.only(top: 20, left: 6),
+            //     child: AddTranButtons(),
+            //   ),
+            // ),
+          ],
+          footerItems: [
+            PaneItemSeparator(),
+            PaneItemHeader(
+              header: Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 4),
+                    const CircleAvatar(
+                      radius: 12,
+                      child: Icon(Icons.person, size: 16),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        ref.watch(firebaseAuthProvider).currentUser?.email ?? "",
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(FluentIcons.settings),
+                      onPressed: () => SettingDialog.show(context),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

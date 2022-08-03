@@ -12,7 +12,7 @@ void main() {
   late FirebaseDatasource datasource;
   setUp(() {
     firestore = FakeFirebaseFirestore();
-    datasource = FirebaseDatasource(firestore: firestore);
+    datasource = FirebaseDatasource(firestore: firestore, userId: null);
   });
 
   group('firebase datasource ...', () {

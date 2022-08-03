@@ -7,6 +7,11 @@ part "auth_providers.freezed.dart";
 class AuthProviders {
   const AuthProviders._();
 
+  static final uuid = Provider<UserId?>((ref) {
+    return ref.watch(
+        state.select((value) => value.valueOrNull?.whenOrNull(authenticated: id)));
+  });
+
   static final state = StreamProvider<AuthState>((ref) {
     return ref.watch(firebaseAuthProvider).authStateChanges().map((event) {
       if (event == null) return const AuthState.unauthenticated();

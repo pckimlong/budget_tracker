@@ -398,7 +398,7 @@ class _TranItem extends ConsumerWidget {
         if (totalString.isNotNullOrBlank)
           DefaultTextStyle(
             style: context.theme.typography.body!.copyWith(
-              color: Colors.black.withAlpha(50),
+              color: context.theme.typography.body!.color!.withAlpha(50),
             ),
             child: Row(
               children: [

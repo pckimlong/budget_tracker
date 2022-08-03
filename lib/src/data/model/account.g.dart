@@ -16,5 +16,5 @@ _$_Account _$$_AccountFromJson(Map<String, dynamic> json) => _$_Account(
 Map<String, dynamic> _$$_AccountToJson(_$_Account instance) =>
     <String, dynamic>{
       'totalBalance': instance.totalBalance,
-      'setting': instance.setting,
+      'setting': instance.setting.toJson(),
     };
