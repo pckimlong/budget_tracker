@@ -365,7 +365,7 @@ class _TranItem extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -384,6 +384,7 @@ class _TranItem extends ConsumerWidget {
                           ),
                         ],
                       ),
+                      const SizedBox(height: 8),
                       const Divider(
                         style: DividerThemeData(horizontalMargin: EdgeInsets.all(0)),
                       ),

@@ -5,6 +5,8 @@ import '../../../../../exports.dart';
 import '../../../../data/model/category.dart';
 import '../../../../data/model/tran.dart';
 import '../../../../providers/category_providers.dart';
+import '../delete/delete_transaction_dialog.dart';
+import '../edit/edit_transaction_dialog.dart';
 
 class TransactionListPage extends ConsumerWidget {
   const TransactionListPage({Key? key}) : super(key: key);
@@ -91,7 +93,7 @@ class _Header extends ConsumerWidget {
           Expanded(child: Text("ប្រភេទចំណូលចំណាយ")),
           Expanded(flex: 3, child: Text("កំណត់ត្រា")),
           Expanded(flex: 2, child: Text("ចំណូល & ចំណាយ")),
-          SizedBox(width: 28),
+          Expanded(child: SizedBox.shrink()),
         ],
       ),
     );
@@ -205,25 +207,25 @@ class _Item extends ConsumerWidget {
               ),
             ),
           ),
-          DropDownButton(
-            buttonBuilder: (context, onOpen) {
-              return IconButton(
-                onPressed: onOpen,
-                icon: const Icon(FluentIcons.more_vertical),
-              );
-            },
-            items: [
-              MenuFlyoutItem(
-                text: const Text('កែប្រែ'),
-                leading: const Icon(FluentIcons.edit),
-                onPressed: () {},
-              ),
-              MenuFlyoutItem(
-                text: Text('លុប', style: TextStyle(color: Colors.red)),
-                leading: Icon(FluentIcons.delete, color: Colors.red),
-                onPressed: () {},
-              ),
-            ],
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  icon: const Icon(FluentIcons.delete),
+                  onPressed: () {
+                    DeleteTransactionDialog.show(context, toDelete: data);
+                  },
+                ),
+                const SizedBox(width: 20),
+                IconButton(
+                  icon: const Icon(FluentIcons.edit),
+                  onPressed: () {
+                    EditTransactionDialog.show(context, toUpdateId: data.id!);
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),

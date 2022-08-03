@@ -1,3 +1,4 @@
+import 'package:budget_tracker/src/core/app_failure.dart';
 import 'package:budget_tracker/src/data/model/category.dart';
 import 'package:budget_tracker/src/data/model/tran.dart';
 import 'package:budget_tracker/src/data/repositories/i_tran_repo.dart';
@@ -118,13 +119,53 @@ class UpdateTranNotifier extends StateNotifier<AsyncValue<bool>> {
   final Reader _reader;
   final TranId tranId;
 
-  Future<void> call({
-    required CategoryId? newCategoryId,
-  }) async {}
+  Future<void> call() async {
+    if (state.isLoading || state == const AsyncValue.data(true)) {
+      return;
+    }
+
+    final data = await _reader(TranProviders.updateData(tranId).future);
+    _validatingData(data);
+
+    if (state.hasError) return;
+
+    state = const AsyncValue.loading();
+    final result = await _reader(tranRepoProvider).update(data);
+    state = result.fold(AsyncValue.error, (_) => const AsyncValue.data(true));
+  }
+
+  void _validatingData(Tran data) {
+    if (data.amount <= 0) {
+      state =
+          const AsyncValue.error(Failure.invalidValue('Amount must greater than 0'));
+    } else if (data.categoryId.isNullOrBlank) {
+      state = const AsyncValue.error(Failure.invalidValue('Must select a category'));
+    }
+  }
 }
 
 class UpdateTranDataNotifier extends StateNotifier<AsyncValue<Tran>> {
   UpdateTranDataNotifier(AsyncValue<Tran> initialState) : super(initialState);
+
+  void onCategoryChanged(CategoryId newCategoryId) {
+    if (!mounted) return;
+    state = state.whenData((value) => value.copyWith(categoryId: newCategoryId));
+  }
+
+  void onAmountChanged(double amount) {
+    if (!mounted) return;
+    state = state.whenData((value) => value.copyWith(amount: amount));
+  }
+
+  void onDateChanged(DateTime newDate) {
+    if (!mounted) return;
+    state = state.whenData((value) => value.copyWith(date: newDate));
+  }
+
+  void onNoteChanged(String? newNote) {
+    if (!mounted) return;
+    state = state.whenData((value) => value.copyWith(note: newNote ?? ""));
+  }
 }
 
 class DeleteTranNotifier extends StateNotifier<AsyncValue<bool>> {
@@ -146,23 +187,32 @@ class DeleteTranNotifier extends StateNotifier<AsyncValue<bool>> {
 }
 
 class AddTranNotifier extends StateNotifier<AsyncValue<bool>> {
-  AddTranNotifier(this._rader) : super(const AsyncValue.data(false));
-  final Reader _rader;
+  AddTranNotifier(this._reader) : super(const AsyncValue.data(false));
+  final Reader _reader;
 
   Future<void> call() async {
     if (state.isLoading || state == const AsyncValue.data(true)) {
       return;
     }
 
-    final data = _rader(TranProviders.addData);
+    final data = _reader(TranProviders.addData);
     _validatingData(data);
 
+    if (state.hasError) return;
+
     state = const AsyncValue.loading();
-    final result = await _rader(tranRepoProvider).create(data);
+    final result = await _reader(tranRepoProvider).create(data);
     state = result.fold(AsyncValue.error, (_) => const AsyncValue.data(true));
   }
 
-  void _validatingData(Tran data) {}
+  void _validatingData(Tran data) {
+    if (data.amount <= 0) {
+      state =
+          const AsyncValue.error(Failure.invalidValue('Amount must greater than 0'));
+    } else if (data.categoryId.isNullOrBlank) {
+      state = const AsyncValue.error(Failure.invalidValue('Must select a category'));
+    }
+  }
 }
 
 class AddTranDataNotifier extends StateNotifier<Tran> {
