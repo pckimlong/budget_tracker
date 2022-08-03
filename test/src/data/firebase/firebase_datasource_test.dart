@@ -12,7 +12,7 @@ void main() {
   late FirebaseDatasource datasource;
   setUp(() {
     firestore = FakeFirebaseFirestore();
-    datasource = FirebaseDatasource(firestore: firestore, userId: null);
+    datasource = FirebaseDatasource(firestore: firestore, userId: 'userId');
   });
 
   group('firebase datasource ...', () {
@@ -49,7 +49,7 @@ void main() {
         test('should increment account total balance if category is a income type',
             () async {
           //Arrange
-          await firestore.categoryCollection.doc('1').set(
+          await firestore.categoryCollection("userId").doc('1').set(
                 Category(
                   id: '1',
                   type: CategoryType.income,
@@ -66,7 +66,7 @@ void main() {
             ),
           );
 
-          final account = await firestore.userDoc.get();
+          final account = await firestore.userDoc('userId').get();
 
           //Assert
           expect(account.data()!.totalBalance, equals(100));
@@ -74,14 +74,14 @@ void main() {
         test('should decrement account total balance if category is a expense type',
             () async {
           //Arrange
-          await firestore.categoryCollection.doc('1').set(
+          await firestore.categoryCollection("userId").doc('1').set(
                 Category(
                   id: '1',
                   type: CategoryType.expense,
                   name: 'expense category',
                 ),
               );
-          await firestore.userDoc.set(Account(totalBalance: 100));
+          await firestore.userDoc('userId').set(Account(totalBalance: 100));
 
           //Act
           await datasource.createTran(
@@ -92,14 +92,14 @@ void main() {
             ),
           );
 
-          final account = await firestore.userDoc.get();
+          final account = await firestore.userDoc('userId').get();
 
           //Assert
           expect(account.data()!.totalBalance, equals(0));
         });
         test('should create tran with correct data eg. id', () async {
           //Arrange
-          await firestore.categoryCollection.doc('1').set(
+          await firestore.categoryCollection("userId").doc('1').set(
                 Category(
                   id: '1',
                   type: CategoryType.expense,
@@ -116,7 +116,7 @@ void main() {
             ),
           );
 
-          final tran = await firestore.tranCollection.doc(id).get();
+          final tran = await firestore.tranCollection("userId").doc(id).get();
 
           //Assert
           expect(tran.data()!.id, equals(id));
@@ -184,15 +184,15 @@ void main() {
 
         test('should decrement account total balance', () async {
           //Arrange
-          await firestore.categoryCollection.doc('1').set(
+          await firestore.categoryCollection("userId").doc('1').set(
                 Category(
                   id: '1',
                   type: CategoryType.expense,
                   name: 'expense category',
                 ),
               );
-          await firestore.userDoc.set(Account(totalBalance: 130));
-          await firestore.tranCollection.doc('1').set(
+          await firestore.userDoc('userId').set(Account(totalBalance: 130));
+          await firestore.tranCollection("userId").doc('1').set(
                 Tran(
                   id: '1',
                   categoryId: '1',
@@ -211,22 +211,22 @@ void main() {
             ),
           );
 
-          final account = await firestore.userDoc.get();
+          final account = await firestore.userDoc('userId').get();
 
           //Assert
           expect(account.data()!.totalBalance, equals(50));
         });
         test('should increment account total balance', () async {
           //Arrange
-          await firestore.categoryCollection.doc('1').set(
+          await firestore.categoryCollection("userId").doc('1').set(
                 Category(
                   id: '1',
                   type: CategoryType.income,
                   name: 'expense category',
                 ),
               );
-          await firestore.userDoc.set(Account(totalBalance: 130));
-          await firestore.tranCollection.doc('1').set(
+          await firestore.userDoc('userId').set(Account(totalBalance: 130));
+          await firestore.tranCollection("userId").doc('1').set(
                 Tran(
                   id: '1',
                   categoryId: '1',
@@ -245,29 +245,29 @@ void main() {
             ),
           );
 
-          final account = await firestore.userDoc.get();
+          final account = await firestore.userDoc('userId').get();
 
           //Assert
           expect(account.data()!.totalBalance, equals(200));
         });
         test('should throw failure if category type changed', () async {
           //Arrange
-          await firestore.categoryCollection.doc('1').set(
+          await firestore.categoryCollection("userId").doc('1').set(
                 Category(
                   id: '1',
                   type: CategoryType.income,
                   name: 'expense category',
                 ),
               );
-          await firestore.categoryCollection.doc('2').set(
+          await firestore.categoryCollection("userId").doc('2').set(
                 Category(
                   id: '2',
                   type: CategoryType.expense,
                   name: 'expense category',
                 ),
               );
-          await firestore.userDoc.set(Account(totalBalance: 130));
-          await firestore.tranCollection.doc('1').set(
+          await firestore.userDoc('userId').set(Account(totalBalance: 130));
+          await firestore.tranCollection("userId").doc('1').set(
                 Tran(
                   id: '1',
                   categoryId: '1',
@@ -300,15 +300,15 @@ void main() {
       group('delete', () {
         test('should increment account balance if tran is expense', () async {
           //Arrange
-          await firestore.categoryCollection.doc('1').set(
+          await firestore.categoryCollection("userId").doc('1').set(
                 Category(
                   id: '1',
                   type: CategoryType.expense,
                   name: 'expense category',
                 ),
               );
-          await firestore.userDoc.set(Account(totalBalance: 130));
-          await firestore.tranCollection.doc('1').set(
+          await firestore.userDoc('userId').set(Account(totalBalance: 130));
+          await firestore.tranCollection("userId").doc('1').set(
                 Tran(
                   id: '1',
                   categoryId: '1',
@@ -320,22 +320,22 @@ void main() {
           //Act
           await datasource.deleteTran("1");
 
-          final account = await firestore.userDoc.get();
+          final account = await firestore.userDoc('userId').get();
 
           //Assert
           expect(account.data()!.totalBalance, equals(200));
         });
         test('should decrement account balance if tran is income', () async {
           //Arrange
-          await firestore.categoryCollection.doc('1').set(
+          await firestore.categoryCollection("userId").doc('1').set(
                 Category(
                   id: '1',
                   type: CategoryType.income,
                   name: 'income category',
                 ),
               );
-          await firestore.userDoc.set(Account(totalBalance: 200));
-          await firestore.tranCollection.doc('1').set(
+          await firestore.userDoc('userId').set(Account(totalBalance: 200));
+          await firestore.tranCollection("userId").doc('1').set(
                 Tran(
                   id: '1',
                   categoryId: '1',
@@ -347,22 +347,22 @@ void main() {
           //Act
           await datasource.deleteTran("1");
 
-          final account = await firestore.userDoc.get();
+          final account = await firestore.userDoc('userId').get();
 
           //Assert
           expect(account.data()!.totalBalance, equals(130));
         });
         test('should delete tran', () async {
           //Arrange
-          await firestore.categoryCollection.doc('1').set(
+          await firestore.categoryCollection("userId").doc('1').set(
                 Category(
                   id: '1',
                   type: CategoryType.income,
                   name: 'income category',
                 ),
               );
-          await firestore.userDoc.set(Account(totalBalance: 200));
-          await firestore.tranCollection.doc('1').set(
+          await firestore.userDoc('userId').set(Account(totalBalance: 200));
+          await firestore.tranCollection("userId").doc('1').set(
                 Tran(
                   id: '1',
                   categoryId: '1',
@@ -374,7 +374,7 @@ void main() {
           //Act
           await datasource.deleteTran("1");
 
-          final tran = await firestore.tranCollection.doc('1').get();
+          final tran = await firestore.tranCollection("userId").doc('1').get();
 
           //Assert
           expect(tran.exists, isFalse);

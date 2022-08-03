@@ -4,7 +4,7 @@ import 'package:budget_tracker/src/data/model/category.dart';
 import 'package:budget_tracker/src/data/model/tran.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-const String _userPath = "users-data";
+const String _userPath = "users";
 const String _categoryPath = "categories";
 const String _tranPath = "transactions";
 const String _adjustmentPaht = "balance-adjustments";

@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
 const String appVersion = "1.0.0";
+bool isTesting = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

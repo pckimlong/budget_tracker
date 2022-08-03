@@ -16,7 +16,9 @@ class FirebaseDatasource {
     required this.firestore,
     required this.userId,
   }) {
-    _createAccountIfNotExisted();
+    if (userId != null) {
+      _createAccountIfNotExisted();
+    }
   }
 
   final FirebaseFirestore firestore;
@@ -259,8 +261,8 @@ class FirebaseDatasource {
     final accountRef = firestore.userDoc(userId);
     final account = await accountRef.get();
 
-    if (account.exists || account.data() == null) {
-      accountRef.set(Account());
+    if (account.data() == null) {
+      accountRef.set(Account(), SetOptions(merge: true));
     }
   }
 
