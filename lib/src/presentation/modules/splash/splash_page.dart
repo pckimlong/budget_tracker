@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:budget_tracker/src/core/app_extensions.dart';
 import 'package:budget_tracker/src/presentation/modules/root_page.dart';
 import 'package:budget_tracker/src/providers/auth_providers.dart';
 import 'package:lottie/lottie.dart';
@@ -40,6 +41,11 @@ class SplashPage extends HookConsumerWidget {
       return null;
     }, [authState]);
 
-    return Center(child: Lottie.asset('assets/lotties/money.json', width: 300));
+    return Container(
+      decoration: BoxDecoration(color: context.theme.acrylicBackgroundColor),
+      child: Center(
+        child: Lottie.asset('assets/lotties/money.json', width: 300),
+      ),
+    );
   }
 }

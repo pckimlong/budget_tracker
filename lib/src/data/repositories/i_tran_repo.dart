@@ -3,6 +3,7 @@ import 'package:budget_tracker/src/common_providers.dart';
 import 'package:budget_tracker/src/core/app_failure.dart';
 import 'package:budget_tracker/src/data/firebase/error_handling.dart';
 import 'package:budget_tracker/src/data/firebase/firebase_datasource.dart';
+import 'package:budget_tracker/src/data/model/category.dart';
 import 'package:budget_tracker/src/data/model/tran.dart';
 
 final tranRepoProvider = Provider<ITranRepo>((ref) {
@@ -13,15 +14,15 @@ abstract class ITranRepo {
   Future<Either<Failure, Tran>> create(Tran data);
   Future<Either<Failure, Tran>> update(Tran data);
   Future<Either<Failure, Unit>> delete(TranId id);
-  Future<Either<Failure, double>> getOpeningBalanceOfDate(DateTime date);
   Stream<Either<Failure, IList<Tran>>> watchAllByDate(DateTime date);
   Future<Either<Failure, IList<Tran>>> findAllByDateRange({
     required DateTime startDate,
     required DateTime endDate,
   });
   Future<Either<Failure, IList<Tran>>> findAll({
-    required DateTime createdAt,
-    int limit = 30,
+    required DateTime? createdAt,
+    CategoryId? categoryId,
+    int limit = 20,
   });
 }
 
@@ -47,11 +48,13 @@ class _Impl implements ITranRepo {
   }
 
   @override
-  Future<Either<Failure, IList<Tran>>> findAll(
-      {required DateTime createdAt, int limit = 30}) {
-    // TODO: implement findAll
-    throw UnimplementedError();
-  }
+  Future<Either<Failure, IList<Tran>>> findAll({
+    required DateTime? createdAt,
+    CategoryId? categoryId,
+    int limit = 30,
+  }) async =>
+      await errorHandler(() async =>
+          await _datasource.findAllTranPagination(createdAt, categoryId, limit));
 
   @override
   Future<Either<Failure, IList<Tran>>> findAllByDateRange(
@@ -73,11 +76,5 @@ class _Impl implements ITranRepo {
   @override
   Stream<Either<Failure, IList<Tran>>> watchAllByDate(DateTime date) {
     return _datasource.streamAllTranByDate(date).onErrorReturnFailure();
-  }
-
-  @override
-  Future<Either<Failure, double>> getOpeningBalanceOfDate(DateTime date) {
-    // TODO: implement getOpeningBalanceOfDate
-    throw UnimplementedError();
   }
 }

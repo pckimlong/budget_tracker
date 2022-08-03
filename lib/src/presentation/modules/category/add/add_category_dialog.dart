@@ -1,6 +1,7 @@
 import 'package:budget_tracker/src/core/app_extensions.dart';
 import 'package:budget_tracker/src/data/model/category.dart';
 import 'package:budget_tracker/src/providers/category_providers.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 import '../../../../../exports.dart';
@@ -24,6 +25,17 @@ class AddCategoryDialog extends HookConsumerWidget {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final controller = useTextEditingController();
     final saveState = ref.watch(CategoryProviders.add);
+
+    ref.listen<AsyncValue<bool>>(
+      CategoryProviders.add,
+      (previous, next) {
+        if (previous?.isLoading == true && next == const AsyncValue.data(true)) {
+          EasyLoading.showToast('បានបង្កើតដោយជោគជ័យ',
+              toastPosition: EasyLoadingToastPosition.top);
+          Navigator.pop(context);
+        }
+      },
+    );
 
     return ContentDialog(
       title: Text('បង្កើតប្រភេទ${type.khmer()}ថ្មី'),

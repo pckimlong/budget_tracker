@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../../../exports.dart';
@@ -11,7 +12,8 @@ Future<Either<Failure, T>> errorHandler<T>(
     FutureOr<Either<Failure, T>> Function() callback) async {
   try {
     return await callback();
-  } on FirebaseAuthException catch (e) {
+  } on FirebaseAuthException catch (e, str) {
+    FirebaseCrashlytics.instance.recordError(e, str);
     log("${e.message ?? "FirebaseAuthException"} code: ${e.code}", error: e);
 
     if (e.code == "network-request-failed") {
@@ -23,10 +25,12 @@ Future<Either<Failure, T>> errorHandler<T>(
     }
 
     return left(Failure.exception(e.message));
-  } on FirebaseException catch (e) {
+  } on FirebaseException catch (e, str) {
+    FirebaseCrashlytics.instance.recordError(e, str);
     log(e.message ?? "FirebaseException", error: e);
     return left(Failure.exception(e.message));
-  } on Exception catch (e) {
+  } on Exception catch (e, str) {
+    FirebaseCrashlytics.instance.recordError(e, str);
     log("Exception", error: e.toString());
     if (e is Failure) return left(e);
     return left(Failure.exception(e.toString()));

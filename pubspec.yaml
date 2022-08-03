@@ -37,9 +37,11 @@ dependencies:
   fast_immutable_collections: ^7.4.1
   firebase_auth: ^3.6.1
   firebase_core: ^1.20.0
+  firebase_crashlytics: ^2.8.6
   fluent_ui: ^4.0.0-pre.2
   flutter:
     sdk: flutter
+  flutter_easyloading: ^3.0.5
   flutter_hooks: ^0.18.5+1
   flutter_login: ^4.0.0
   form_builder_validators: ^8.3.0

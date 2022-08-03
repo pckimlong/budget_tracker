@@ -1,6 +1,7 @@
 import 'package:budget_tracker/src/data/model/category.dart';
 import 'package:budget_tracker/src/data/model/tran.dart';
 import 'package:budget_tracker/src/data/repositories/i_tran_repo.dart';
+import 'package:budget_tracker/src/presentation/modules/transaction/add/add_transaction_dialog.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/home/home_page.dart';
 import 'package:budget_tracker/src/providers/category_providers.dart';
 
@@ -111,7 +112,7 @@ class AddTranNotifier extends StateNotifier<AsyncValue<bool>> {
 class AddTranDataNotifier extends StateNotifier<Tran> {
   AddTranDataNotifier(Reader reader)
       : super(Tran(
-          categoryId: '',
+          categoryId: reader(AddTransactionDialog.initialCategoryIdProvider),
           date: reader(HomePage.dateFilter),
           amount: 0,
         ));

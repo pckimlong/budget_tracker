@@ -20,17 +20,26 @@ class AddTransactionDialog extends HookConsumerWidget {
   const AddTransactionDialog({
     Key? key,
     required this.type,
+    this.category,
   }) : super(key: key);
 
   final CategoryType type;
+  final Category? category;
 
-  static void show(BuildContext context, {required CategoryType type}) {
+  static final initialCategoryIdProvider = Provider<String>((ref) {
+    return '';
+  });
+
+  static void show(BuildContext context,
+      {required CategoryType type, Category? category}) {
     showDialog(
       context: context,
       builder: (_) => ProviderScope(
         overrides: [
           _dataProvider
-              .overrideWithValue(StateController(Category(type: type, name: '')))
+              .overrideWithValue(StateController(Category(type: type, name: ''))),
+          AddTransactionDialog.initialCategoryIdProvider
+              .overrideWithValue(category?.id ?? "")
         ],
         child: AddTransactionDialog(type: type),
       ),

@@ -12,8 +12,7 @@ typedef TranId = String;
 class Tran with _$Tran {
   factory Tran({
     TranId? id,
-    required CategoryId categoryId,
-    CategoryType? type,
+    @JsonKey(name: Tran.categoryIdKey) required CategoryId categoryId,
     @JsonKey(name: Tran.dateKey, fromJson: Tran._dateParserFromJsonNonNull, toJson: Tran._dateParserToJsonNonNull)
         required DateTime date,
     @Default('') String note,
@@ -29,6 +28,7 @@ class Tran with _$Tran {
   factory Tran.fromJson(Map<String, dynamic> json) => _$TranFromJson(json);
 
   static const createdAtKey = "createdAt";
+  static const categoryIdKey = "categoryId";
   static const dateKey = "date";
 
   static int? _dateParserToJson(DateTime? dateTime) {

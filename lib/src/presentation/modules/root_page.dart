@@ -1,10 +1,12 @@
 import 'package:budget_tracker/main.dart';
 import 'package:budget_tracker/src/common_providers.dart';
 import 'package:budget_tracker/src/core/app_extensions.dart';
+import 'package:budget_tracker/src/presentation/modules/account/adjust/adjust_balance_dialog.dart';
 import 'package:budget_tracker/src/presentation/modules/splash/splash_page.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/home/home_page.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/list/transaction_list_page.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/report/report_page.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 
 import '../../../exports.dart';
@@ -44,7 +46,7 @@ class RootPage extends HookConsumerWidget {
           ),
           PaneItem(
             icon: const Icon(FluentIcons.list),
-            title: const Text('ប្រតិបត្តិការចំណូលចំណាយ'),
+            title: const Text('ប្រវត្តិចំណូលចំណាយ'),
           ),
           PaneItem(
             icon: const Icon(FluentIcons.report_document),
@@ -60,7 +62,9 @@ class RootPage extends HookConsumerWidget {
               try {
                 await ref.read(firebaseAuthProvider).signOut();
                 nav.push(FluentPageRoute(builder: (_) => const SplashPage()));
-              } catch (e) {}
+              } catch (e) {
+                EasyLoading.showError(e.toString());
+              }
             },
           ),
           PaneItemHeader(
@@ -122,7 +126,7 @@ class _AccountBalance extends ConsumerWidget {
           message: 'កែប្រែសមតុល្យសរុប',
           child: IconButton(
             icon: const Icon(FluentIcons.edit),
-            onPressed: () {},
+            onPressed: () => AdjustBalanceDialog.show(context),
           ),
         ),
       ],

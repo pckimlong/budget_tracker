@@ -12,7 +12,10 @@ class Account with _$Account {
   static const totalBalanceKey = "totalBalance";
 
   factory Account({
-    @JsonKey(name: Account.totalBalanceKey) @Default(0) double totalBalance,
+    @JsonKey(name: Account.totalBalanceKey)
+    @JsonKey(name: Account.totalBalanceKey)
+    @Default(0)
+        double totalBalance,
   }) = _Account;
 
   factory Account.fromJson(Map<String, dynamic> json) => _$AccountFromJson(json);

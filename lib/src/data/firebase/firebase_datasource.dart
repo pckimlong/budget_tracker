@@ -2,6 +2,7 @@
 import 'package:budget_tracker/src/core/app_extensions.dart';
 import 'package:budget_tracker/src/data/firebase/firebase_extensions.dart';
 import 'package:budget_tracker/src/data/model/account.dart';
+import 'package:budget_tracker/src/data/model/balance_adjustment_history.dart';
 import 'package:budget_tracker/src/data/model/category.dart';
 import 'package:budget_tracker/src/data/model/tran.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,6 +17,26 @@ class FirebaseDatasource {
 
   final FirebaseFirestore firestore;
 
+  Future<Either<Failure, IList<Tran>>> findAllTranPagination(
+    DateTime? createdAt,
+    CategoryId? categoryId,
+    int limit,
+  ) async {
+    var query = firestore.tranCollection
+        .orderBy(Tran.createdAtKey, descending: true)
+        .limit(limit);
+
+    if (categoryId.isNotNullOrBlank) {
+      query = query.where(Tran.categoryIdKey, isEqualTo: categoryId);
+    }
+
+    if (createdAt != null) {
+      query = query.startAfter([createdAt.millisecondsSinceEpoch]);
+    }
+    final result = await query.get();
+    return right(result.docs.map((e) => e.data()!).toIList());
+  }
+
   Stream<Either<Failure, IList<Tran>>> streamAllTranByDate(DateTime date) {
     return firestore.tranCollection
         .where(Tran.dateKey, isEqualTo: date.dateOnly().millisecondsSinceEpoch)
@@ -29,6 +50,37 @@ class FirebaseDatasource {
         .orderBy(Category.nameKey)
         .snapshots()
         .map((event) => right(event.docs.map((e) => e.data()!).toIList()));
+  }
+
+  Stream<Either<Failure, IList<BalanceAdjustmentHistory>>> streamBalanceAdjustment() {
+    return firestore.balanceAdjustmentCollection
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map((event) => right(event.docs.map((e) => e.data()!).toIList()));
+  }
+
+  Future<void> adjustBalance(double newBalance) async {
+    await firestore.runTransaction((txn) async {
+      final accRef = firestore.userDoc;
+      final accDoc = await txn.get(accRef);
+      if (accDoc.data() == null || !accDoc.exists) {
+        txn.set(accRef, Account(totalBalance: newBalance));
+      } else {
+        txn.update(accRef, {Account.totalBalanceKey: newBalance});
+      }
+      final oldBalance = accDoc.data()?.totalBalance ?? 0;
+
+      final adjustmentRef = firestore.balanceAdjustmentCollection.doc();
+      txn.set(
+        adjustmentRef,
+        BalanceAdjustmentHistory(
+          id: adjustmentRef.id,
+          date: DateTime.now(),
+          newBalance: newBalance,
+          oldBalance: oldBalance,
+        ),
+      );
+    });
   }
 
   Future<CategoryId?> createCategory(Category model) async {

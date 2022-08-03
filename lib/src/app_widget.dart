@@ -1,4 +1,5 @@
 import 'package:budget_tracker/src/presentation/modules/splash/splash_page.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
 import '../exports.dart';
@@ -23,6 +24,7 @@ class AppWidget extends ConsumerWidget {
         accentColor: Colors.teal,
       ),
       themeMode: ThemeMode.light,
+      builder: EasyLoading.init(),
       home: const SplashPage(),
     );
   }

@@ -50,21 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCSYdiIqHpua50wmcwmNyENa44MuRLBB78',
-    appId: '1:177051866505:web:31ead7bf4260f756fcfd58',
-    messagingSenderId: '177051866505',
-    projectId: 'hea-srun-money-tracker',
-    authDomain: 'hea-srun-money-tracker.firebaseapp.com',
-    storageBucket: 'hea-srun-money-tracker.appspot.com',
+    apiKey: 'AIzaSyChpV5ZfwV2O0XzxBZh7-PlOj9dEmW6zII',
+    appId: '1:997271121553:web:cfddd75a9f9a11cde15930',
+    messagingSenderId: '997271121553',
+    projectId: 'simple-budget-tracker-1b3df',
+    authDomain: 'simple-budget-tracker-1b3df.firebaseapp.com',
+    storageBucket: 'simple-budget-tracker-1b3df.appspot.com',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyARR1lkTmHH1QuSlA6GgTvXGigCZahWy28',
-    appId: '1:177051866505:ios:d8513e46193c1c52fcfd58',
-    messagingSenderId: '177051866505',
-    projectId: 'hea-srun-money-tracker',
-    storageBucket: 'hea-srun-money-tracker.appspot.com',
-    iosClientId: '177051866505-7b9esdchu3enq85p9dfn4fq7inbuajr4.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCxe5kGCpo7r4_nO0IVF_L0tK0N4ORfdSY',
+    appId: '1:997271121553:ios:780708e83c61c898e15930',
+    messagingSenderId: '997271121553',
+    projectId: 'simple-budget-tracker-1b3df',
+    storageBucket: 'simple-budget-tracker-1b3df.appspot.com',
+    iosClientId: '997271121553-kjcs20mp7jehs2on3j5ql8poakjgqpfs.apps.googleusercontent.com',
     iosBundleId: 'com.kimapp.budgetTracker',
   );
 }
