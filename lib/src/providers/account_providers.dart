@@ -1,4 +1,5 @@
 import 'package:budget_tracker/src/data/model/account.dart';
+import 'package:budget_tracker/src/data/model/setting.dart';
 import 'package:budget_tracker/src/data/repositories/i_account_repo.dart';
 
 import '../../exports.dart';
@@ -16,4 +17,6 @@ class AccountProviders {
         .watchOne()
         .map((event) => event.fold((l) => throw l, id));
   });
+
+
 }

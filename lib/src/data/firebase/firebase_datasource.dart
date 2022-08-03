@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../exports.dart';
 import '../../core/app_failure.dart';
+import '../model/setting.dart';
 
 class FirebaseDatasource {
   FirebaseDatasource({
@@ -35,6 +36,14 @@ class FirebaseDatasource {
     }
     final result = await query.get();
     return right(result.docs.map((e) => e.data()!).toIList());
+  }
+
+  Future<void> updateSetting(Setting newSetting) async {
+    final ref = firestore.userDoc;
+    final userdoc = await ref.get();
+    if (userdoc.exists) {
+      await ref.update({'setting': newSetting.toJson()});
+    }
   }
 
   Stream<Either<Failure, IList<Tran>>> streamAllTranByDate(DateTime date) {

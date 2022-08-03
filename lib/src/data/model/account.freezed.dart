@@ -21,7 +21,9 @@ Account _$AccountFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Account {
   @JsonKey(name: Account.totalBalanceKey)
+  @JsonKey(name: Account.totalBalanceKey)
   double get totalBalance => throw _privateConstructorUsedError;
+  Setting get setting => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -32,7 +34,13 @@ mixin _$Account {
 abstract class $AccountCopyWith<$Res> {
   factory $AccountCopyWith(Account value, $Res Function(Account) then) =
       _$AccountCopyWithImpl<$Res>;
-  $Res call({@JsonKey(name: Account.totalBalanceKey) double totalBalance});
+  $Res call(
+      {@JsonKey(name: Account.totalBalanceKey)
+      @JsonKey(name: Account.totalBalanceKey)
+          double totalBalance,
+      Setting setting});
+
+  $SettingCopyWith<$Res> get setting;
 }
 
 /// @nodoc
@@ -46,13 +54,25 @@ class _$AccountCopyWithImpl<$Res> implements $AccountCopyWith<$Res> {
   @override
   $Res call({
     Object? totalBalance = freezed,
+    Object? setting = freezed,
   }) {
     return _then(_value.copyWith(
       totalBalance: totalBalance == freezed
           ? _value.totalBalance
           : totalBalance // ignore: cast_nullable_to_non_nullable
               as double,
+      setting: setting == freezed
+          ? _value.setting
+          : setting // ignore: cast_nullable_to_non_nullable
+              as Setting,
     ));
+  }
+
+  @override
+  $SettingCopyWith<$Res> get setting {
+    return $SettingCopyWith<$Res>(_value.setting, (value) {
+      return _then(_value.copyWith(setting: value));
+    });
   }
 }
 
@@ -62,7 +82,14 @@ abstract class _$$_AccountCopyWith<$Res> implements $AccountCopyWith<$Res> {
           _$_Account value, $Res Function(_$_Account) then) =
       __$$_AccountCopyWithImpl<$Res>;
   @override
-  $Res call({@JsonKey(name: Account.totalBalanceKey) double totalBalance});
+  $Res call(
+      {@JsonKey(name: Account.totalBalanceKey)
+      @JsonKey(name: Account.totalBalanceKey)
+          double totalBalance,
+      Setting setting});
+
+  @override
+  $SettingCopyWith<$Res> get setting;
 }
 
 /// @nodoc
@@ -77,12 +104,17 @@ class __$$_AccountCopyWithImpl<$Res> extends _$AccountCopyWithImpl<$Res>
   @override
   $Res call({
     Object? totalBalance = freezed,
+    Object? setting = freezed,
   }) {
     return _then(_$_Account(
       totalBalance: totalBalance == freezed
           ? _value.totalBalance
           : totalBalance // ignore: cast_nullable_to_non_nullable
               as double,
+      setting: setting == freezed
+          ? _value.setting
+          : setting // ignore: cast_nullable_to_non_nullable
+              as Setting,
     ));
   }
 }
@@ -90,18 +122,26 @@ class __$$_AccountCopyWithImpl<$Res> extends _$AccountCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_Account implements _Account {
-  _$_Account({@JsonKey(name: Account.totalBalanceKey) this.totalBalance = 0});
+  _$_Account(
+      {@JsonKey(name: Account.totalBalanceKey)
+      @JsonKey(name: Account.totalBalanceKey)
+          this.totalBalance = 0,
+      this.setting = const Setting()});
 
   factory _$_Account.fromJson(Map<String, dynamic> json) =>
       _$$_AccountFromJson(json);
 
   @override
   @JsonKey(name: Account.totalBalanceKey)
+  @JsonKey(name: Account.totalBalanceKey)
   final double totalBalance;
+  @override
+  @JsonKey()
+  final Setting setting;
 
   @override
   String toString() {
-    return 'Account(totalBalance: $totalBalance)';
+    return 'Account(totalBalance: $totalBalance, setting: $setting)';
   }
 
   @override
@@ -110,13 +150,16 @@ class _$_Account implements _Account {
         (other.runtimeType == runtimeType &&
             other is _$_Account &&
             const DeepCollectionEquality()
-                .equals(other.totalBalance, totalBalance));
+                .equals(other.totalBalance, totalBalance) &&
+            const DeepCollectionEquality().equals(other.setting, setting));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(totalBalance));
+      runtimeType,
+      const DeepCollectionEquality().hash(totalBalance),
+      const DeepCollectionEquality().hash(setting));
 
   @JsonKey(ignore: true)
   @override
@@ -133,14 +176,19 @@ class _$_Account implements _Account {
 
 abstract class _Account implements Account {
   factory _Account(
-          {@JsonKey(name: Account.totalBalanceKey) final double totalBalance}) =
-      _$_Account;
+      {@JsonKey(name: Account.totalBalanceKey)
+      @JsonKey(name: Account.totalBalanceKey)
+          final double totalBalance,
+      final Setting setting}) = _$_Account;
 
   factory _Account.fromJson(Map<String, dynamic> json) = _$_Account.fromJson;
 
   @override
   @JsonKey(name: Account.totalBalanceKey)
+  @JsonKey(name: Account.totalBalanceKey)
   double get totalBalance;
+  @override
+  Setting get setting;
   @override
   @JsonKey(ignore: true)
   _$$_AccountCopyWith<_$_Account> get copyWith =>

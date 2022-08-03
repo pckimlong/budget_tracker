@@ -33,8 +33,23 @@ class SignInPage extends ConsumerWidget {
           return e.toString();
         }
       },
-      onRecoverPassword: (_) {
-        return null;
+      onConfirmRecover: (otp, p1) async {
+        try {
+          await ref
+              .read(firebaseAuthProvider)
+              .confirmPasswordReset(code: otp, newPassword: p1.password);
+          return null;
+        } catch (e) {
+          return e.toString();
+        }
+      },
+      onRecoverPassword: (data) async {
+        try {
+          await ref.read(firebaseAuthProvider).sendPasswordResetEmail(email: data);
+          return null;
+        } catch (e) {
+          return e.toString();
+        }
       },
       onSignup: (data) async {
         try {

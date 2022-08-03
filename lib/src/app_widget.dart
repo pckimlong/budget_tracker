@@ -1,4 +1,5 @@
 import 'package:budget_tracker/src/presentation/modules/splash/splash_page.dart';
+import 'package:budget_tracker/src/providers/setting_providers.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 
@@ -9,6 +10,10 @@ class AppWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final color = ref.watch(SettingProviders.appColor);
+    final themeMode =
+        ref.watch(SettingProviders.setting.select((value) => value.themeMode));
+
     return FluentApp(
       debugShowCheckedModeBanner: false,
       localizationsDelegates: const [
@@ -16,14 +21,14 @@ class AppWidget extends ConsumerWidget {
       ],
       theme: ThemeData(
         fontFamily: 'Battambang',
-        accentColor: Colors.blue,
+        accentColor: color,
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         fontFamily: 'Battambang',
-        accentColor: Colors.teal,
+        accentColor: color,
       ),
-      themeMode: ThemeMode.light,
+      themeMode: themeMode,
       builder: EasyLoading.init(),
       home: const SplashPage(),
     );

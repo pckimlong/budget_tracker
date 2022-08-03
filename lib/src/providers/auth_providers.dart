@@ -15,6 +15,16 @@ class AuthProviders {
   });
 }
 
+class ChangePasswordNotifier extends StateNotifier<AsyncValue<bool>> {
+  ChangePasswordNotifier(this._reader) : super(const AsyncValue.data(false));
+  final Reader _reader;
+
+  // Future<void> call() async {
+  //   state = AsyncValue.loading();
+  //   final result = _reader(firebaseAuthProvider).pas;
+  // }
+}
+
 @freezed
 class AuthState with _$AuthState {
   const factory AuthState.authenticated(UserId uuid) = _Authenticated;

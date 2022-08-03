@@ -2,6 +2,7 @@
 
 import 'package:budget_tracker/src/core/app_extensions.dart';
 import 'package:budget_tracker/src/presentation/modules/root_page.dart';
+import 'package:budget_tracker/src/providers/account_providers.dart';
 import 'package:budget_tracker/src/providers/auth_providers.dart';
 import 'package:lottie/lottie.dart';
 
@@ -28,7 +29,11 @@ class SplashPage extends HookConsumerWidget {
                   (route) => false,
                 );
               },
-              authenticated: (_) {
+              authenticated: (_) async {
+                try {
+                  await ref.read(AccountProviders.stream.future);
+                } catch (_) {}
+
                 nav.pushAndRemoveUntil(
                   FluentPageRoute(builder: (_) => const RootPage()),
                   (route) => false,

@@ -4,6 +4,7 @@ import 'package:budget_tracker/src/core/app_failure.dart';
 import 'package:budget_tracker/src/data/firebase/error_handling.dart';
 import 'package:budget_tracker/src/data/firebase/firebase_datasource.dart';
 import 'package:budget_tracker/src/data/model/account.dart';
+import 'package:budget_tracker/src/data/model/setting.dart';
 
 final accountRepoProvider = Provider<IAccountRepo>((ref) {
   return _Impl(ref.watch(datasourceProvider));
@@ -11,7 +12,7 @@ final accountRepoProvider = Provider<IAccountRepo>((ref) {
 
 abstract class IAccountRepo {
   Stream<Either<Failure, Account>> watchOne();
-  Future<Either<Failure, Unit>> update(Account data);
+  Future<Either<Failure, Unit>> updateSetting(Setting data);
 }
 
 class _Impl implements IAccountRepo {
@@ -20,13 +21,15 @@ class _Impl implements IAccountRepo {
   _Impl(this._datasource);
 
   @override
-  Future<Either<Failure, Unit>> update(Account data) {
-    // TODO: implement update
-    throw UnimplementedError();
+  Stream<Either<Failure, Account>> watchOne() {
+    return _datasource.watchAccount().onErrorReturnFailure();
   }
 
   @override
-  Stream<Either<Failure, Account>> watchOne() {
-    return _datasource.watchAccount().onErrorReturnFailure();
+  Future<Either<Failure, Unit>> updateSetting(Setting data) async {
+    return await errorHandler(() async {
+      await _datasource.updateSetting(data);
+      return right(unit);
+    });
   }
 }

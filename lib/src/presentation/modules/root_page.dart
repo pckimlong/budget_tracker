@@ -1,11 +1,10 @@
 import 'package:budget_tracker/src/common_providers.dart';
 import 'package:budget_tracker/src/core/app_extensions.dart';
 import 'package:budget_tracker/src/presentation/modules/account/adjust/adjust_balance_dialog.dart';
-import 'package:budget_tracker/src/presentation/modules/splash/splash_page.dart';
+import 'package:budget_tracker/src/presentation/modules/setting/setting_dialog.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/home/home_page.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/list/transaction_list_page.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/report/report_page.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 
 import '../../../exports.dart';
@@ -53,32 +52,30 @@ class RootPage extends HookConsumerWidget {
           ),
         ],
         footerItems: [
-          PaneItemHeader(
-            header: Row(
-              children: [
-                const SizedBox(width: 4),
-                const CircleAvatar(
-                  radius: 12,
-                  child: Icon(Icons.person, size: 16),
-                ),
-                const SizedBox(width: 10),
-                Text(ref.watch(firebaseAuthProvider).currentUser?.email ?? ""),
-              ],
-            ),
-          ),
           PaneItemSeparator(),
-          PaneItemAction(
-            icon: const Icon(FluentIcons.sign_out),
-            title: const Text('LOGOUT'),
-            onTap: () async {
-              final nav = Navigator.of(context);
-              try {
-                await ref.read(firebaseAuthProvider).signOut();
-                nav.push(FluentPageRoute(builder: (_) => const SplashPage()));
-              } catch (e) {
-                EasyLoading.showError(e.toString());
-              }
-            },
+          PaneItemHeader(
+            header: Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Row(
+                children: [
+                  const SizedBox(width: 4),
+                  const CircleAvatar(
+                    radius: 12,
+                    child: Icon(Icons.person, size: 16),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      ref.watch(firebaseAuthProvider).currentUser?.email ?? "",
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(FluentIcons.settings),
+                    onPressed: () => SettingDialog.show(context),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
