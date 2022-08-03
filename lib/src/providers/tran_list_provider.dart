@@ -37,6 +37,16 @@ class TranListNotifier extends StateNotifier<IList<Tran>> {
 
     state = state.addAll(newItems);
   }
+
+  void updateItem(Tran changedItem) {
+    if (state.where((element) => element.id == changedItem.id).isNotEmpty) {
+      state = state.updateById([changedItem], (item) => item.id != changedItem.id);
+    }
+  }
+
+  void deleteItem(TranId id) {
+    state = state.removeWhere((element) => element.id == id);
+  }
 }
 
 class TranFetchMoreNotifier extends StateNotifier<AsyncValue<void>> {
@@ -49,7 +59,7 @@ class TranFetchMoreNotifier extends StateNotifier<AsyncValue<void>> {
   final Reader _reader;
 
   DateTime? _createdAtOffset;
-  bool _hasMore = true;
+  bool _hasMore = false;
   final _limit = 20;
 
   Future<void> call() async {

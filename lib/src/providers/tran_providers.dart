@@ -4,6 +4,7 @@ import 'package:budget_tracker/src/data/model/tran.dart';
 import 'package:budget_tracker/src/data/repositories/i_tran_repo.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/home/home_page.dart';
 import 'package:budget_tracker/src/providers/category_providers.dart';
+import 'package:budget_tracker/src/providers/tran_list_provider.dart';
 
 import '../../exports.dart';
 part "tran_providers.freezed.dart";
@@ -131,7 +132,13 @@ class UpdateTranNotifier extends StateNotifier<AsyncValue<bool>> {
 
     state = const AsyncValue.loading();
     final result = await _reader(tranRepoProvider).update(data);
-    state = result.fold(AsyncValue.error, (_) => const AsyncValue.data(true));
+    state = result.fold(
+      AsyncValue.error,
+      (updated) {
+        _reader(TranListProvider.pagination.notifier).updateItem(updated);
+        return const AsyncValue.data(true);
+      },
+    );
   }
 
   void _validatingData(Tran data) {
@@ -182,7 +189,13 @@ class DeleteTranNotifier extends StateNotifier<AsyncValue<bool>> {
 
     state = const AsyncValue.loading();
     final result = await _reader(tranRepoProvider).delete(toDeleteId);
-    state = result.fold(AsyncValue.error, (r) => const AsyncValue.data(true));
+    state = result.fold(
+      AsyncValue.error,
+      (_) {
+        _reader(TranListProvider.pagination.notifier).deleteItem(toDeleteId);
+        return const AsyncValue.data(true);
+      },
+    );
   }
 }
 
