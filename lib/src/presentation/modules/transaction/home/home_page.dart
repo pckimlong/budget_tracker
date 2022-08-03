@@ -1,13 +1,19 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:budget_tracker/src/core/app_extensions.dart';
 import 'package:budget_tracker/src/data/model/category.dart';
 import 'package:budget_tracker/src/data/model/tran.dart';
+import 'package:budget_tracker/src/presentation/modules/category/picker/category_picker_dialog.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/add/add_transaction_dialog.dart';
+import 'package:budget_tracker/src/presentation/modules/transaction/delete/delete_transaction_dialog.dart';
+import 'package:budget_tracker/src/presentation/modules/transaction/edit/edit_transaction_dialog.dart';
 import 'package:budget_tracker/src/presentation/widgets/my_box.dart';
 import 'package:budget_tracker/src/presentation/widgets/my_date_pickeer.dart';
 import 'package:budget_tracker/src/providers/category_providers.dart';
 import 'package:budget_tracker/src/providers/tran_providers.dart';
 
 import '../../../../../exports.dart';
+import '../../../../../main.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -150,10 +156,10 @@ class _Header extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: const [
           Expanded(child: Text("កាលបរិច្ឆេទ")),
-          Expanded(child: Text("ប្រភេទចំណូលចំណាយ")),
-          Expanded(flex: 3, child: Text("កំណត់ត្រា")),
+          Expanded(flex: 2, child: Text("ប្រភេទចំណូលចំណាយ")),
+          Expanded(flex: 4, child: Text("កំណត់ត្រា")),
           Expanded(flex: 2, child: Text("ចំណូល & ចំណាយ")),
-          SizedBox(width: 28),
+          Expanded(child: SizedBox.shrink())
         ],
       ),
     );
@@ -189,8 +195,8 @@ class _Item extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(child: Text(data.date.format(false))),
-          Expanded(child: Text(category.value?.name ?? "")),
-          Expanded(flex: 3, child: Text(data.note)),
+          Expanded(flex: 2, child: Text(category.value?.name ?? "")),
+          Expanded(flex: 4, child: Text(data.note)),
           Expanded(
             flex: 2,
             child: Text(
@@ -201,25 +207,25 @@ class _Item extends ConsumerWidget {
               ),
             ),
           ),
-          DropDownButton(
-            buttonBuilder: (context, onOpen) {
-              return IconButton(
-                onPressed: onOpen,
-                icon: const Icon(FluentIcons.more_vertical),
-              );
-            },
-            items: [
-              MenuFlyoutItem(
-                text: const Text('កែប្រែ'),
-                leading: const Icon(FluentIcons.edit),
-                onPressed: () {},
-              ),
-              MenuFlyoutItem(
-                text: Text('លុប', style: TextStyle(color: Colors.red)),
-                leading: Icon(FluentIcons.delete, color: Colors.red),
-                onPressed: () {},
-              ),
-            ],
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  icon: const Icon(FluentIcons.delete),
+                  onPressed: () {
+                    DeleteTransactionDialog.show(context, toDelete: data);
+                  },
+                ),
+                const SizedBox(width: 20),
+                IconButton(
+                  icon: const Icon(FluentIcons.edit),
+                  onPressed: () {
+                    EditTransactionDialog.show(context, toUpdateId: data.id!);
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -233,35 +239,62 @@ class _AddButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        OutlinedButton(
-          style: ButtonStyle(
-            foregroundColor: ButtonState.all(Colors.green),
-          ),
-          child: Row(
-            children: const [
-              Icon(FluentIcons.add),
-              SizedBox(width: 8),
-              Text('ចំណូល'),
-            ],
-          ),
-          onPressed: () =>
-              AddTransactionDialog.show(context, type: CategoryType.income),
+        Row(
+          children: [
+            OutlinedButton(
+              style: ButtonStyle(
+                foregroundColor: ButtonState.all(Colors.green),
+              ),
+              child: Row(
+                children: const [
+                  Icon(FluentIcons.add),
+                  SizedBox(width: 8),
+                  Text('ចំណូល'),
+                ],
+              ),
+              onPressed: () async {
+                final category =
+                    await CategoryPickerDialog.show(context, type: CategoryType.income);
+                AddTransactionDialog.show(context,
+                    type: CategoryType.income, categoryId: category);
+              },
+            ),
+            const SizedBox(width: 18),
+            OutlinedButton(
+              style: ButtonStyle(
+                foregroundColor: ButtonState.all(Colors.red),
+              ),
+              child: Row(
+                children: const [
+                  Icon(FluentIcons.calculator_subtract),
+                  SizedBox(width: 8),
+                  Text('ចំណាយ'),
+                ],
+              ),
+              onPressed: () async {
+                final category = await CategoryPickerDialog.show(context,
+                    type: CategoryType.expense);
+
+                AddTransactionDialog.show(context,
+                    type: CategoryType.expense, categoryId: category);
+              },
+            )
+          ],
         ),
-        const SizedBox(width: 18),
-        OutlinedButton(
-          style: ButtonStyle(
-            foregroundColor: ButtonState.all(Colors.red),
+        DefaultTextStyle(
+          style: context.theme.typography.caption!,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: const [
+                Text('Version $appVersion'),
+                SizedBox(width: 20),
+                Text('Powered by Kimapp'),
+              ],
+            ),
           ),
-          child: Row(
-            children: const [
-              Icon(FluentIcons.calculator_subtract),
-              SizedBox(width: 8),
-              Text('ចំណាយ'),
-            ],
-          ),
-          onPressed: () =>
-              AddTransactionDialog.show(context, type: CategoryType.expense),
         )
       ],
     );

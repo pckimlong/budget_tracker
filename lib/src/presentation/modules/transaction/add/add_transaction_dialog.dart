@@ -20,36 +20,42 @@ class AddTransactionDialog extends HookConsumerWidget {
   const AddTransactionDialog({
     Key? key,
     required this.type,
-    this.category,
+    this.initialCateId,
   }) : super(key: key);
 
   final CategoryType type;
-  final Category? category;
-
-  static final initialCategoryIdProvider = Provider<String>((ref) {
-    return '';
-  });
 
   static void show(BuildContext context,
-      {required CategoryType type, Category? category}) {
+      {required CategoryType type, CategoryId? categoryId}) {
     showDialog(
       context: context,
       builder: (_) => ProviderScope(
         overrides: [
           _dataProvider
               .overrideWithValue(StateController(Category(type: type, name: ''))),
-          AddTransactionDialog.initialCategoryIdProvider
-              .overrideWithValue(category?.id ?? "")
         ],
-        child: AddTransactionDialog(type: type),
+        child: AddTransactionDialog(
+          type: type,
+          initialCateId: categoryId,
+        ),
       ),
     );
   }
+
+  final CategoryId? initialCateId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final formKey = useMemoized(() => GlobalKey<FormState>());
     final savingState = ref.watch(TranProviders.add);
+
+    useMemoized(() {
+      if (initialCateId.isNotNullOrBlank) {
+        Future.microtask(() => ref
+            .read(TranProviders.addData.notifier)
+            .onCategoryChanged(initialCateId ?? ""));
+      }
+    });
 
     String headline6;
     switch (type) {

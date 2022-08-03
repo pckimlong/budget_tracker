@@ -1,7 +1,6 @@
 import 'package:budget_tracker/src/data/model/category.dart';
 import 'package:budget_tracker/src/data/model/tran.dart';
 import 'package:budget_tracker/src/data/repositories/i_tran_repo.dart';
-import 'package:budget_tracker/src/presentation/modules/transaction/add/add_transaction_dialog.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/home/home_page.dart';
 import 'package:budget_tracker/src/providers/category_providers.dart';
 
@@ -18,6 +17,28 @@ class TranWithBalance with _$TranWithBalance {
 
 class TranProviders {
   const TranProviders._();
+
+  static final ofId =
+      FutureProvider.autoDispose.family<Tran, TranId>((ref, tranId) async {
+    final result = await ref.watch(tranRepoProvider).findOne(tranId);
+    return result.fold((l) => throw l, id);
+  });
+
+  static final update = StateNotifierProvider.autoDispose
+      .family<UpdateTranNotifier, AsyncValue<bool>, TranId>((ref, id) {
+    return UpdateTranNotifier(ref.read, tranId: id);
+  });
+
+  static final updateData = StateNotifierProvider.autoDispose
+      .family<UpdateTranDataNotifier, AsyncValue<Tran>, TranId>((ref, id) {
+    final data = ref.watch(ofId(id));
+    return UpdateTranDataNotifier(data);
+  });
+
+  static final delete = StateNotifierProvider.autoDispose
+      .family<DeleteTranNotifier, AsyncValue<bool>, TranId>((ref, id) {
+    return DeleteTranNotifier(ref.read, toDeleteId: id);
+  });
 
   static final add =
       StateNotifierProvider.autoDispose<AddTranNotifier, AsyncValue<bool>>((ref) {
@@ -89,6 +110,41 @@ class TranProviders {
   });
 }
 
+class UpdateTranNotifier extends StateNotifier<AsyncValue<bool>> {
+  UpdateTranNotifier(
+    this._reader, {
+    required this.tranId,
+  }) : super(const AsyncValue.data(false));
+  final Reader _reader;
+  final TranId tranId;
+
+  Future<void> call({
+    required CategoryId? newCategoryId,
+  }) async {}
+}
+
+class UpdateTranDataNotifier extends StateNotifier<AsyncValue<Tran>> {
+  UpdateTranDataNotifier(AsyncValue<Tran> initialState) : super(initialState);
+}
+
+class DeleteTranNotifier extends StateNotifier<AsyncValue<bool>> {
+  DeleteTranNotifier(this._reader, {required this.toDeleteId})
+      : super(const AsyncValue.data(false));
+
+  final Reader _reader;
+  final TranId toDeleteId;
+
+  Future<void> call() async {
+    if (state.isLoading || state == const AsyncValue.data(true)) {
+      return;
+    }
+
+    state = const AsyncValue.loading();
+    final result = await _reader(tranRepoProvider).delete(toDeleteId);
+    state = result.fold(AsyncValue.error, (r) => const AsyncValue.data(true));
+  }
+}
+
 class AddTranNotifier extends StateNotifier<AsyncValue<bool>> {
   AddTranNotifier(this._rader) : super(const AsyncValue.data(false));
   final Reader _rader;
@@ -111,11 +167,13 @@ class AddTranNotifier extends StateNotifier<AsyncValue<bool>> {
 
 class AddTranDataNotifier extends StateNotifier<Tran> {
   AddTranDataNotifier(Reader reader)
-      : super(Tran(
-          categoryId: reader(AddTransactionDialog.initialCategoryIdProvider),
-          date: reader(HomePage.dateFilter),
-          amount: 0,
-        ));
+      : super(
+          Tran(
+            categoryId: "",
+            date: reader(HomePage.dateFilter),
+            amount: 0,
+          ),
+        );
 
   void onCategoryChanged(CategoryId newCategoryId) {
     state = state.copyWith(categoryId: newCategoryId);

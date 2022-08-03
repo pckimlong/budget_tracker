@@ -1,4 +1,3 @@
-import 'package:budget_tracker/main.dart';
 import 'package:budget_tracker/src/common_providers.dart';
 import 'package:budget_tracker/src/core/app_extensions.dart';
 import 'package:budget_tracker/src/presentation/modules/account/adjust/adjust_balance_dialog.dart';
@@ -54,6 +53,20 @@ class RootPage extends HookConsumerWidget {
           ),
         ],
         footerItems: [
+          PaneItemHeader(
+            header: Row(
+              children: [
+                const SizedBox(width: 4),
+                const CircleAvatar(
+                  radius: 12,
+                  child: Icon(Icons.person, size: 16),
+                ),
+                const SizedBox(width: 10),
+                Text(ref.watch(firebaseAuthProvider).currentUser?.email ?? ""),
+              ],
+            ),
+          ),
+          PaneItemSeparator(),
           PaneItemAction(
             icon: const Icon(FluentIcons.sign_out),
             title: const Text('LOGOUT'),
@@ -66,21 +79,6 @@ class RootPage extends HookConsumerWidget {
                 EasyLoading.showError(e.toString());
               }
             },
-          ),
-          PaneItemHeader(
-            header: DefaultTextStyle(
-              style: context.theme.typography.caption!,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text('Version $appVersion'),
-                    Text('Powered by Kimapp'),
-                  ],
-                ),
-              ),
-            ),
           ),
         ],
       ),

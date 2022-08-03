@@ -44,6 +44,8 @@ class AdjustBalanceDialog extends HookConsumerWidget {
           Form(
             key: formKey,
             child: TextFormBox(
+              style: context.theme.typography.title,
+              autofocus: true,
               controller: controller,
               inputFormatters: inputFormatterNumeric,
               validator: FormBuilderValidators.compose([
@@ -103,7 +105,7 @@ class _History extends ConsumerWidget {
 
     return MyBox(
       child: SizedBox(
-        height: 400,
+        height: 350,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

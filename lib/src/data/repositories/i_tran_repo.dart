@@ -19,6 +19,7 @@ abstract class ITranRepo {
     required DateTime startDate,
     required DateTime endDate,
   });
+  Future<Either<Failure, Tran>> findOne(TranId id);
   Future<Either<Failure, IList<Tran>>> findAll({
     required DateTime? createdAt,
     CategoryId? categoryId,
@@ -76,5 +77,13 @@ class _Impl implements ITranRepo {
   @override
   Stream<Either<Failure, IList<Tran>>> watchAllByDate(DateTime date) {
     return _datasource.streamAllTranByDate(date).onErrorReturnFailure();
+  }
+
+  @override
+  Future<Either<Failure, Tran>> findOne(TranId id) async {
+    return await errorHandler(() async {
+      final result = await _datasource.findOneTran(id);
+      return right(result);
+    });
   }
 }

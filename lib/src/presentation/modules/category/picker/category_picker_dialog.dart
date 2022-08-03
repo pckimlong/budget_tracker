@@ -1,6 +1,7 @@
 import 'package:budget_tracker/src/core/app_extensions.dart';
 import 'package:budget_tracker/src/data/model/category.dart';
 import 'package:budget_tracker/src/presentation/modules/category/add/add_category_dialog.dart';
+import 'package:budget_tracker/src/presentation/modules/category/edit/edit_cateogry_dialog.dart';
 import 'package:budget_tracker/src/presentation/widgets/seletable_item.dart';
 import 'package:budget_tracker/src/providers/category_providers.dart';
 
@@ -129,26 +130,12 @@ class _Item extends ConsumerWidget {
                   : Icon(FluentIcons.add, color: Colors.green),
               const SizedBox(width: 12),
               Expanded(child: Text(data.valueOrNull!.name)),
-              DropDownButton(
-                buttonBuilder: (context, onOpen) {
-                  return IconButton(
-                    onPressed: onOpen,
-                    icon: const Icon(FluentIcons.more_vertical),
-                  );
+              IconButton(
+                icon: const Icon(FluentIcons.edit),
+                onPressed: () {
+                  EditCategoryDialog.show(context, toUpdateId: data.value!.id!);
                 },
-                items: [
-                  MenuFlyoutItem(
-                    text: const Text('កែប្រែ'),
-                    leading: const Icon(FluentIcons.edit),
-                    onPressed: () {},
-                  ),
-                  MenuFlyoutItem(
-                    text: Text('លុប', style: TextStyle(color: Colors.red)),
-                    leading: Icon(FluentIcons.delete, color: Colors.red),
-                    onPressed: () {},
-                  ),
-                ],
-              )
+              ),
             ],
           ),
         ),

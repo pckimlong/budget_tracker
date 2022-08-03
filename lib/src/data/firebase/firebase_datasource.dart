@@ -194,6 +194,12 @@ class FirebaseDatasource {
     );
   }
 
+  Future<Tran> findOneTran(String id) async {
+    final result = await firestore.tranCollection.doc(id).get();
+    if (!result.exists || result.data() == null) throw const Failure.notFound();
+    return result.data()!;
+  }
+
   Future<void> updateTran(Tran data) async {
     assert(data.id.isNotNullOrBlank);
 
