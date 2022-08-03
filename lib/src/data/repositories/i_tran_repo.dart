@@ -55,9 +55,11 @@ class _Impl implements ITranRepo {
 
   @override
   Future<Either<Failure, IList<Tran>>> findAllByDateRange(
-      {required DateTime startDate, required DateTime endDate}) {
-    // TODO: implement findAllByDateRange
-    throw UnimplementedError();
+      {required DateTime startDate, required DateTime endDate}) async {
+    return await errorHandler(() async {
+      final result = await _datasource.fetchAllTranByDateRange(startDate, endDate);
+      return right(result);
+    });
   }
 
   @override

@@ -40,6 +40,18 @@ class FirebaseDatasource {
     return ref.id;
   }
 
+  Future<IList<Tran>> fetchAllTranByDateRange(
+      DateTime startDate, DateTime endDate) async {
+    final start = startDate.dateOnly().millisecondsSinceEpoch;
+    final end = endDate.dateOnly().millisecondsSinceEpoch;
+    final result = await firestore.tranCollection
+        .where(Tran.dateKey, isGreaterThanOrEqualTo: start)
+        .where(Tran.dateKey, isLessThanOrEqualTo: end)
+        .get();
+
+    return result.docs.map((e) => e.data()!).toIList();
+  }
+
   Future<void> updateCategory(Category model) async {
     final ref = firestore.categoryCollection.doc(model.id);
     ref.set(model.copyWith(createdAt: DateTime.now()));

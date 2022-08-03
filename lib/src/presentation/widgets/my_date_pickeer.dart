@@ -17,6 +17,7 @@ class MyDatePicker extends HookConsumerWidget {
     this.child,
     this.width,
     this.showNavigator = false,
+    this.useYtdTodayTmr = true,
   }) : super(key: key);
 
   final void Function(DateTime) onDateChanged;
@@ -24,6 +25,7 @@ class MyDatePicker extends HookConsumerWidget {
   final Widget? child;
   final double? width;
   final bool showNavigator;
+  final bool useYtdTodayTmr;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -100,7 +102,7 @@ class MyDatePicker extends HookConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        selected.format(),
+                        selected.format(useYtdTodayTmr),
                         style: FluentTheme.of(context).typography.body,
                       ),
                       const SizedBox(width: 12),

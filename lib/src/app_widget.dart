@@ -15,8 +15,14 @@ class AppWidget extends ConsumerWidget {
       ],
       theme: ThemeData(
         fontFamily: 'Battambang',
+        accentColor: Colors.blue,
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        fontFamily: 'Battambang',
         accentColor: Colors.teal,
       ),
+      themeMode: ThemeMode.light,
       home: const SplashPage(),
     );
   }
