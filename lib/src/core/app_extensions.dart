@@ -66,16 +66,18 @@ extension DateTimeX on DateTime {
   // }
 
   String format([bool useYtdTodayTmr = true]) {
+    final formatted = DateFormat('dd-MM-yyyy').format(this);
     if (useYtdTodayTmr) {
       if (isToday) {
-        return "ថ្ងៃនេះ";
+        return "ថ្ងៃនេះ ($formatted)";
       } else if (isYesterday) {
-        return "ម្សិលមិញ";
+        return "ម្សិលមិញ ($formatted)";
       } else if (isTomorrow) {
-        return "ស្អែក";
+        return "ស្អែក ($formatted)";
       }
     }
-    return DateFormat('dd-MM-yyyy').format(this);
+
+    return formatted;
   }
 
   bool get isYesterday {

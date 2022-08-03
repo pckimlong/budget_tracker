@@ -50,6 +50,13 @@ class RootPage extends HookConsumerWidget {
             icon: const Icon(FluentIcons.report_document),
             title: const Text('របាយការណ៍'),
           ),
+          // PaneItemSeparator(),
+          // PaneItemHeader(
+          //   header: const Padding(
+          //     padding: EdgeInsets.only(top: 20, left: 6),
+          //     child: AddTranButtons(),
+          //   ),
+          // ),
         ],
         footerItems: [
           PaneItemSeparator(),

@@ -3,10 +3,9 @@
 import 'package:budget_tracker/src/core/app_extensions.dart';
 import 'package:budget_tracker/src/data/model/category.dart';
 import 'package:budget_tracker/src/data/model/tran.dart';
-import 'package:budget_tracker/src/presentation/modules/category/picker/category_picker_dialog.dart';
-import 'package:budget_tracker/src/presentation/modules/transaction/add/add_transaction_dialog.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/delete/delete_transaction_dialog.dart';
 import 'package:budget_tracker/src/presentation/modules/transaction/edit/edit_transaction_dialog.dart';
+import 'package:budget_tracker/src/presentation/widgets/add_tran_button.dart';
 import 'package:budget_tracker/src/presentation/widgets/my_box.dart';
 import 'package:budget_tracker/src/presentation/widgets/my_date_pickeer.dart';
 import 'package:budget_tracker/src/providers/category_providers.dart';
@@ -25,25 +24,36 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ScaffoldPage.withPadding(
-      bottomBar: const Padding(
-        padding: EdgeInsets.all(18),
-        child: _AddButtons(),
-      ),
-      header: PageHeader(
-        padding: 18,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+      bottomBar: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'ចំណូលចំណាយប្រចាំថ្ងៃ',
-              style: context.theme.typography.title,
-            ),
-            const Divider(),
-            const SizedBox(height: 10),
-            const _DateFilter(),
+            const Spacer(),
+            DefaultTextStyle(
+              style: context.theme.typography.caption!,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: const [
+                    Text('Version $appVersion'),
+                    SizedBox(width: 20),
+                    Text('Powered by Kimapp'),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
-        commandBar: const _Balance(),
+      ),
+      header: PageHeader(
+        title: Row(
+          children: const [
+            _DateFilter(),
+            Expanded(child: Divider()),
+            AddTranButtons(),
+          ],
+        ),
       ),
       content: const _TranList(),
     );
@@ -112,23 +122,26 @@ class _TranList extends ConsumerWidget {
           );
         }
 
-        return Column(
-          children: [
-            const SizedBox(height: 25),
-            const _Header(),
-            Expanded(
-              child: ListView.separated(
-                itemCount: trans.length,
-                itemBuilder: (_, index) {
-                  return ProviderScope(
-                    overrides: [_itemProvider.overrideWithValue(trans[index])],
-                    child: const _Item(),
-                  );
-                },
-                separatorBuilder: (_, __) => const Divider(),
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              const _Header(),
+              Expanded(
+                child: ListView.separated(
+                  itemCount: trans.length,
+                  itemBuilder: (_, index) {
+                    return ProviderScope(
+                      overrides: [_itemProvider.overrideWithValue(trans[index])],
+                      child: const _Item(),
+                    );
+                  },
+                  separatorBuilder: (_, __) => const Divider(),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
       error: (err, __) {
@@ -229,74 +242,6 @@ class _Item extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _AddButtons extends ConsumerWidget {
-  const _AddButtons({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            OutlinedButton(
-              style: ButtonStyle(
-                foregroundColor: ButtonState.all(Colors.green),
-              ),
-              child: Row(
-                children: const [
-                  Icon(FluentIcons.add),
-                  SizedBox(width: 8),
-                  Text('ចំណូល'),
-                ],
-              ),
-              onPressed: () async {
-                final category =
-                    await CategoryPickerDialog.show(context, type: CategoryType.income);
-                AddTransactionDialog.show(context,
-                    type: CategoryType.income, categoryId: category);
-              },
-            ),
-            const SizedBox(width: 18),
-            OutlinedButton(
-              style: ButtonStyle(
-                foregroundColor: ButtonState.all(Colors.red),
-              ),
-              child: Row(
-                children: const [
-                  Icon(FluentIcons.calculator_subtract),
-                  SizedBox(width: 8),
-                  Text('ចំណាយ'),
-                ],
-              ),
-              onPressed: () async {
-                final category = await CategoryPickerDialog.show(context,
-                    type: CategoryType.expense);
-
-                AddTransactionDialog.show(context,
-                    type: CategoryType.expense, categoryId: category);
-              },
-            )
-          ],
-        ),
-        DefaultTextStyle(
-          style: context.theme.typography.caption!,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: const [
-                Text('Version $appVersion'),
-                SizedBox(width: 20),
-                Text('Powered by Kimapp'),
-              ],
-            ),
-          ),
-        )
-      ],
     );
   }
 }

@@ -18,6 +18,7 @@ class MyDatePicker extends HookConsumerWidget {
     this.width,
     this.showNavigator = false,
     this.useYtdTodayTmr = true,
+    this.endNavigator = true,
   }) : super(key: key);
 
   final void Function(DateTime) onDateChanged;
@@ -26,6 +27,7 @@ class MyDatePicker extends HookConsumerWidget {
   final double? width;
   final bool showNavigator;
   final bool useYtdTodayTmr;
+  final bool endNavigator;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,6 +35,16 @@ class MyDatePicker extends HookConsumerWidget {
     final flyoutController = useMemoized(() => FlyoutController());
     final selected = selectedDate ?? DateTime.now();
 
+    var preButton = IconButton(
+      icon: Icon(
+        FluentIcons.page_left,
+        size: 28,
+        color: context.theme.disabledColor,
+      ),
+      onPressed: () {
+        onDateChanged(selected - 1.days);
+      },
+    );
     return Flyout(
       controller: flyoutController,
       content: (_) => Container(
@@ -77,17 +89,7 @@ class MyDatePicker extends HookConsumerWidget {
       ),
       child: Row(
         children: [
-          if (showNavigator)
-            IconButton(
-              icon: Icon(
-                FluentIcons.page_left,
-                size: 28,
-                color: context.theme.disabledColor,
-              ),
-              onPressed: () {
-                onDateChanged(selected - 1.days);
-              },
-            ),
+          if (showNavigator && !endNavigator) preButton,
           const SizedBox(width: 4),
           GestureDetector(
             onTap: () => flyoutController.open(),
@@ -112,6 +114,7 @@ class MyDatePicker extends HookConsumerWidget {
                 ),
           ),
           const SizedBox(width: 4),
+          if (endNavigator && showNavigator) preButton,
           if (showNavigator)
             IconButton(
               icon: Icon(
