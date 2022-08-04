@@ -162,7 +162,7 @@ class _Header extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: const [
           Expanded(child: Text("កាលបរិច្ឆេទ")),
-          Expanded(flex: 2, child: Text("ប្រភេទចំណូលចំណាយ")),
+          Expanded(flex: 2, child: Text("ប្រភេទ")),
           Expanded(flex: 4, child: Text("កំណត់ត្រា")),
           Expanded(flex: 2, child: Text("ចំណូល & ចំណាយ")),
           Expanded(child: SizedBox.shrink())
